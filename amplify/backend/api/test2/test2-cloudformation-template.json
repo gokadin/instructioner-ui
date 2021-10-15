@@ -8,15 +8,15 @@
         },
     
     
-          "functiontestName": {
+          "functiontest2Name": {
             "Type": "String",
-            "Default": "functiontestName"
+            "Default": "functiontest2Name"
           },
 
           
-          "functiontestArn": {
+          "functiontest2Arn": {
             "Type": "String",
-            "Default": "functiontestArn"
+            "Default": "functiontest2Arn"
           }
 
           
@@ -37,16 +37,16 @@
         
         
         
-      "test": {
+      "test2": {
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "test",
+          "Name": "test2",
           "Body": {
             "swagger": "2.0",
             "info": {
               "version": "2018-05-24T17:52:00Z",
-              "title": "test"
+              "title": "test2"
             },
             "host": {
                 "Fn::Join": [
@@ -82,7 +82,7 @@
             ],
             "paths": {
               
-              "/test": {
+              "/test2": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -168,7 +168,7 @@
                             
                             {
 
-                                "Ref": "functiontestArn"
+                                "Ref": "functiontest2Arn"
                             },
                             
                             "/invocations"
@@ -181,7 +181,7 @@
                   }
                 }
               },
-              "/test/{proxy+}": {
+              "/test2/{proxy+}": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -267,7 +267,7 @@
                           
                           {
 
-                            "Ref": "functiontestArn"
+                            "Ref": "functiontest2Arn"
                           },
                           
                           "/invocations"
@@ -324,12 +324,12 @@
       
         
 
-        "functiontestPermissiontest": {
+        "functiontest2Permissiontest2": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
                     {
-                        "Ref":  "functiontestName"
+                        "Ref":  "functiontest2Name"
                     },
                     
                     "Action": "lambda:InvokeFunction",
@@ -348,7 +348,7 @@
                             },
                             ":",
                             {
-                                "Ref": "test"
+                                "Ref": "test2"
                             },
                             "/*/*/*"
                         ]
@@ -359,7 +359,7 @@
         
         
 
-      "DeploymentAPIGWtest": {
+      "DeploymentAPIGWtest2": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
@@ -373,7 +373,7 @@
             ]
           },
           "RestApiId": {
-            "Ref": "test"
+            "Ref": "test2"
           }
         }
       }
@@ -381,15 +381,15 @@
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {"Fn::Join": ["", ["https://", {"Ref": "test"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "test2"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
         },
         "ApiName": {
           "Description": "API Friendly name",
-          "Value": "test"
+          "Value": "test2"
         },
         "ApiId": {
           "Description": "API ID (prefix of API URL)",
-          "Value": {"Ref": "test"}
+          "Value": {"Ref": "test2"}
         }
     }
   }

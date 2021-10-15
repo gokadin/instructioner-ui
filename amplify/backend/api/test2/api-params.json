@@ -1,19 +1,19 @@
 {
   "paths": [
     {
-      "name": "/test",
-      "lambdaFunction": "test",
+      "name": "/test2",
+      "lambdaFunction": "test2",
       "privacy": {
         "open": true
       },
-      "policyResourceName": "/test"
+      "policyResourceName": "/test2"
     }
   ],
-  "resourceName": "test",
-  "apiName": "test",
+  "resourceName": "test2",
+  "apiName": "test2",
   "functionArns": [
     {
-      "lambdaFunction": "test"
+      "lambdaFunction": "test2"
     }
   ],
   "privacy": {
@@ -25,7 +25,7 @@
   "dependsOn": [
     {
       "category": "function",
-      "resourceName": "test",
+      "resourceName": "test2",
       "attributes": [
         "Name",
         "Arn"
