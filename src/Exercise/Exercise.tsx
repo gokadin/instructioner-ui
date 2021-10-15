@@ -1,4 +1,5 @@
 import React, {useEffect} from "react";
+// import {testApi} from "./service";
 
 export const Exercise = () => {
     useEffect(() => {
