@@ -1,44 +1,76 @@
 {
   "function": {
-    "test2": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "test3": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "Subject": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "subject",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
     }
   },
   "api": {
-    "test2": {
+    "subjects": {
       "service": "API Gateway",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "test2",
+          "resourceName": "Subject",
           "attributes": [
             "Name",
             "Arn"
           ]
         }
       ]
-    },
-    "test3": {
-      "service": "API Gateway",
+    }
+  },
+  "storage": {
+    "subject": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "auth": {
+    "cognitod4fc8858": {
+      "service": "Cognito",
+      "serviceType": "managed",
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "test3",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
+      "frontendAuthConfig": {
+        "loginMechanisms": [
+          "PREFERRED_USERNAME"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      }
     }
   }
 }

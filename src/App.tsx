@@ -1,12 +1,44 @@
 import React from 'react';
 import './App.css';
-import {Exercise} from "./Exercise/Exercise";
+import {Box, ChakraProvider, VStack} from "@chakra-ui/react"
+import theme from './theme'
+import {ExercisePage} from "./pages/exercise/exercise.page";
+import {Header} from "./components/header/header";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {TopicPage} from "./pages/topics/topic.page";
+import {Provider} from "react-redux";
+import {store} from "./reducer";
+import {AdminPage} from "./pages/admin/admin.page";
 
 function App() {
+
     return (
-        <div className="App">
-            <Exercise/>
-        </div>
+        <ChakraProvider theme={theme}>
+            <Provider store={store}>
+                <div className="App">
+                    <VStack align={'stretch'}>
+                        <Box bg={'black'}>
+                            <Header/>
+                        </Box>
+                        <Box>
+                            <BrowserRouter>
+                                <Switch>
+                                    <Route path="/topics">
+                                        <TopicPage/>
+                                    </Route>
+                                    <Route path="/session">
+                                        <ExercisePage/>
+                                    </Route>
+                                    <Route path="/admin">
+                                        <AdminPage/>
+                                    </Route>
+                                </Switch>
+                            </BrowserRouter>
+                        </Box>
+                    </VStack>
+                </div>
+            </Provider>
+        </ChakraProvider>
     );
 }
 

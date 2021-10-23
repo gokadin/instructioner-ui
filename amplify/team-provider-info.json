@@ -10,6 +10,21 @@
       "StackName": "amplify-instructioner-dev-105011",
       "StackId": "arn:aws:cloudformation:us-west-2:691567916614:stack/amplify-instructioner-dev-105011/59a43260-2de0-11ec-b97e-0a36dd0d1a93",
       "AmplifyAppId": "d29fbgmsj5dy37"
+    },
+    "categories": {
+      "function": {
+        "test3": {
+          "deploymentBucketName": "amplify-instructioner-dev-105011-deployment",
+          "s3Key": "amplify-builds/test3-5a52303834364a764245-build.zip"
+        },
+        "Subject": {
+          "deploymentBucketName": "amplify-instructioner-dev-105011-deployment",
+          "s3Key": "amplify-builds/Subject-3177647953684d393254-build.zip"
+        }
+      },
+      "auth": {
+        "cognitod4fc8858": {}
+      }
     }
   }
 }

@@ -1,0 +1,7 @@
+{
+    "tableName": "subject",
+    "partitionKeyName": "id",
+    "partitionKeyType": "S",
+    "sortKeyName": "name",
+    "sortKeyType": "S"
+}
