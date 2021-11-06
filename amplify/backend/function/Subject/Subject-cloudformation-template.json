@@ -16,13 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "storagesubjectName": {
+    "storagesubjectsName": {
       "Type": "String",
-      "Default": "storagesubjectName"
+      "Default": "storagesubjectsName"
     },
-    "storagesubjectArn": {
+    "storagesubjectsArn": {
       "Type": "String",
-      "Default": "storagesubjectArn"
+      "Default": "storagesubjectsArn"
     }
   },
   "Conditions": {
@@ -97,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "instructionerLambdaRolee2be01d6",
+            "instLambdaRolec1367c86",
             {
               "Fn::Join": [
                 "",
                 [
-                  "instructionerLambdaRolee2be01d6",
+                  "instLambdaRolec1367c86",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storagesubjectArn"
+                  "Ref": "storagesubjectsArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storagesubjectArn"
+                        "Ref": "storagesubjectsArn"
                       },
                       "index/*"
                     ]

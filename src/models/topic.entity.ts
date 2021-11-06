@@ -1,6 +1,6 @@
 export interface TopicEntity {
+    courseId: string
     id: string
     name: string
-    subtopics: string[]
-    isCollapsed: boolean
+    displayName: string
 }

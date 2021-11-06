@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/exercises",
+      "lambdaFunction": "Exercise",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/exercises"
+    }
+  ],
+  "resourceName": "exerciseApi",
+  "apiName": "exerciseApi",
+  "functionArns": [
+    {
+      "lambdaFunction": "Exercise"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-inst-temp-133404-authRole",
+    "unAuthRoleName": "amplify-inst-temp-133404-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "Exercise",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

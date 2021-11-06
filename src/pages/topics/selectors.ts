@@ -9,12 +9,17 @@ export const selectTopics = createSelector(
 export const selectSubtopics = createSelector(
     (state: RootState) => state.topic,
     (_: RootState, topicId: string) => topicId,
-    (topic, topicId) => topic.topics[topicId].subtopics.map(subtopicId => topic.subTopics[subtopicId])
+    (state, topicId) => state.subtopicIds.map(subtopicId => state.subtopics[subtopicId])
+        .filter(subtopic => subtopic.topicId === topicId)
 )
 
 export const selectCompletedSubtopicCount = createSelector(
     (state: RootState) => state.topic,
     (_: RootState, topicId: string) => topicId,
-    (topic, topicId) => topic.topics[topicId].subtopics.map(subtopicId => topic.subTopics[subtopicId])
-        .filter(subtopic => subtopic.isCompleted).length
+    (state, topicId) => 0
+)
+
+export const selectSelectedSubtopic = createSelector(
+    (state: RootState) => state.topic,
+    (state) => state.selectedSubtopicId === '' ? undefined : state.subtopics[state.selectedSubtopicId]
 )

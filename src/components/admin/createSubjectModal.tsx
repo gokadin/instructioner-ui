@@ -22,12 +22,14 @@ interface Props {
 
 export const CreateSubjectModal = ({isOpen, onClose}: Props) => {
     const initialRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [subjectNameValue, setSubjectNameValue] = useState('')
+    const [nameValue, setNameValue] = useState('')
+    const [displayNameValue, setDisplayNameValue] = useState('')
     const dispatch = useDispatch()
 
     const submit = () => {
-        dispatch(createSubject(subjectNameValue))
-        setSubjectNameValue('')
+        dispatch(createSubject({name: nameValue, displayName: displayNameValue}))
+        setNameValue('')
+        setDisplayNameValue('')
         onClose()
     }
 
@@ -42,8 +44,13 @@ export const CreateSubjectModal = ({isOpen, onClose}: Props) => {
                 <ModalBody>
                     <FormControl>
                         <FormLabel>Name</FormLabel>
-                        <Input ref={initialRef} placeholder={'Name'} value={subjectNameValue}
-                               onChange={(e) => setSubjectNameValue(e.target.value)}/>
+                        <Input ref={initialRef} placeholder={'Name'} value={nameValue}
+                               onChange={(e) => setNameValue(e.target.value)}/>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Display name</FormLabel>
+                        <Input placeholder={'Display name'} value={displayNameValue}
+                               onChange={(e) => setDisplayNameValue(e.target.value)}/>
                     </FormControl>
                 </ModalBody>
                 <ModalFooter>

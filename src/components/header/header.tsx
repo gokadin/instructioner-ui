@@ -7,7 +7,7 @@ export const Header = () => {
         <Box p={2}>
             <HStack>
                 <IconButton icon={<HamburgerIcon/>} aria-label={'menu'}/>
-                <Image src={'logo.png'} alt={'logo'} />
+                <Image src={'/logo.png'} alt={'logo'} />
             </HStack>
         </Box>
     )

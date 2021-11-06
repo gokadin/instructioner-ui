@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {TopicEntity} from "../../models/topic.entity";
 import {Box, Flex, HStack, Progress, Spacer, Text, VStack} from "@chakra-ui/react";
 import {ChevronDownIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {SubtopicList} from "./subtopics/subtopics";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../reducer";
-import {selectCompletedSubtopicCount} from "../../pages/topics/selectors";
-import {topicActions} from "../../pages/topics/reducer";
+import {selectCompletedSubtopicCount, selectSubtopics} from "../../pages/topics/selectors";
+import {fetchSubtopics} from "../../pages/topics/reducer";
 
 interface Props {
     topic: TopicEntity
@@ -14,25 +14,32 @@ interface Props {
 
 export const TopicCard = ({topic}: Props) => {
     const subtopicCount = useSelector((state: RootState) => selectCompletedSubtopicCount(state, topic.id))
+    const subtopics = useSelector((state: RootState) => selectSubtopics(state, topic.id))
+    const [isCollapsed, setIsCollapsed] = useState(true)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        console.log('called', topic.id)
+        dispatch(fetchSubtopics(topic.id))
+    }, [dispatch, topic.id])
+
     return <VStack key={topic.id} align={'stretch'} borderWidth={1} borderRadius={'md'} bg={'gray.900'} pb={2}>
-        <Progress borderTopRadius={'md'} size={'xs'} colorScheme={'green'} max={topic.subtopics.length}
+        <Progress borderTopRadius={'md'} size={'xs'} colorScheme={'green'} max={subtopics.length}
                   value={subtopicCount}/>
-        <Box px={2} onClick={() => dispatch(topicActions.toggleTopicCollapse(topic.id))}>
+        <Box px={2} onClick={() => setIsCollapsed(!isCollapsed)}>
             <Flex>
                 <HStack>
                     <Text fontSize={'xl'} color={'orange'}>{topic.name}</Text>
                 </HStack>
                 <Spacer/>
-                {topic.isCollapsed ? <ChevronRightIcon/> : <ChevronDownIcon/>}
+                {isCollapsed ? <ChevronRightIcon/> : <ChevronDownIcon/>}
             </Flex>
         </Box>
-        {topic.isCollapsed &&
+        {isCollapsed &&
         <Text mt={'0px !important'} px={2}
-              color={'gray.400'}>{subtopicCount}/{topic.subtopics.length} topics</Text>
+              color={'gray.400'}>{subtopicCount}/{subtopics.length} topics</Text>
         }
-        {!topic.isCollapsed &&
+        {!isCollapsed &&
         <SubtopicList topic={topic}/>
         }
     </VStack>

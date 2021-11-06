@@ -9,6 +9,8 @@ import {TopicPage} from "./pages/topics/topic.page";
 import {Provider} from "react-redux";
 import {store} from "./reducer";
 import {AdminPage} from "./pages/admin/admin.page";
+import {BuilderPage} from "./pages/builder/builder.page";
+import {ExerciseListPage} from "./pages/exerciseList/exerciseList.page";
 
 function App() {
 
@@ -20,17 +22,23 @@ function App() {
                         <Box bg={'black'}>
                             <Header/>
                         </Box>
-                        <Box>
+                        <Box mt={'0px !important'}>
                             <BrowserRouter>
                                 <Switch>
-                                    <Route path="/topics">
+                                    <Route path="/topics" exact={true}>
                                         <TopicPage/>
                                     </Route>
-                                    <Route path="/session">
+                                    <Route path="/session" exact={true}>
                                         <ExercisePage/>
                                     </Route>
-                                    <Route path="/admin">
+                                    <Route path="/admin" exact={true}>
                                         <AdminPage/>
+                                    </Route>
+                                    <Route path="/admin/exercises" exact={true}>
+                                        <ExerciseListPage/>
+                                    </Route>
+                                    <Route path="/admin/exercises/builder" exact={true}>
+                                        <BuilderPage/>
                                     </Route>
                                 </Switch>
                             </BrowserRouter>

@@ -12,23 +12,24 @@ const AWS = require('aws-sdk')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var bodyParser = require('body-parser')
 var express = require('express')
+const {randomUUID} = require("crypto");
 
 AWS.config.update({ region: process.env.TABLE_REGION });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-let tableName = "subject";
+let tableName = "subjects";
 if(process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
 
 const userIdPresent = false; // TODO: update in case is required to use that definition
-const partitionKeyName = "id";
+const partitionKeyName = "program";
 const partitionKeyType = "S";
-const sortKeyName = "name";
+const sortKeyName = "id";
 const sortKeyType = "S";
 const hasSortKey = sortKeyName !== "";
-const path = "/";
+const path = "/subjects";
 const UNAUTH = 'UNAUTH';
 const hashKeyPath = '/:' + partitionKeyName;
 const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
@@ -172,7 +173,11 @@ app.post(path, function(req, res) {
 
   let putItemParams = {
     TableName: tableName,
-    Item: req.body
+    Item: {
+      ...req.body,
+      program: '1',
+      id: randomUUID()
+    }
   }
   dynamodb.put(putItemParams, (err, data) => {
     if(err) {

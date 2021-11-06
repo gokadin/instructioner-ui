@@ -1,11 +1,13 @@
 import React from "react";
 import {VStack} from "@chakra-ui/react";
-import {useSelector} from "react-redux";
-import {selectTopics} from "../../pages/topics/selectors";
 import {TopicCard} from "./topicCard";
+import {TopicEntity} from "../../models/topic.entity";
 
-export const TopicList = () => {
-    const topics = useSelector(selectTopics)
+interface Props {
+    topics: TopicEntity[]
+}
+
+export const TopicList = ({topics}: Props) => {
 
     return <VStack align={'stretch'} px={4} py={2} spacing={4}>
         {topics.map((topic: any) => <TopicCard key={topic.id} topic={topic}/>)}

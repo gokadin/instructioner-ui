@@ -1,10 +1,27 @@
 {
-  "function": {
-    "test3": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+  "storage": {
+    "subjects": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
     },
+    "courses": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    },
+    "topics": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    },
+    "subtopics": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    },
+    "exercises": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "function": {
     "Subject": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -12,7 +29,88 @@
       "dependsOn": [
         {
           "category": "storage",
-          "resourceName": "subject",
+          "resourceName": "subjects",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
+    },
+    "Course": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "courses",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
+    },
+    "Topic": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "topics",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
+    },
+    "Subtopic": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "subtopics",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
+    },
+    "instcommon": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
+    },
+    "Exercise": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "exercises",
           "attributes": [
             "Name",
             "Arn"
@@ -25,30 +123,8 @@
       ]
     }
   },
-  "api": {
-    "subjects": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "Subject",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
-    }
-  },
-  "storage": {
-    "subject": {
-      "service": "DynamoDB",
-      "providerPlugin": "awscloudformation"
-    }
-  },
   "auth": {
-    "cognitod4fc8858": {
+    "cognito6bfe642b": {
       "service": "Cognito",
       "serviceType": "managed",
       "providerPlugin": "awscloudformation",
@@ -70,7 +146,62 @@
         "verificationMechanisms": [
           "EMAIL"
         ]
-      }
+      },
+      "dependsOn": []
+    }
+  },
+  "api": {
+    "subjectApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "Subject",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "Course",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "Topic",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "Subtopic",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "exerciseApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "Exercise",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   }
 }

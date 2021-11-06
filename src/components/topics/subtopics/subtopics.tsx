@@ -18,8 +18,8 @@ export const SubtopicList = ({topic}: Props) => {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const beginSession = (subtopicId: string) => {
-        dispatch(topicActions.setSubtopic(subtopicId))
+    const beginSession = async (subtopicId: string) => {
+        await dispatch(topicActions.setSubtopic(subtopicId))
         history.push('/session')
     }
 
