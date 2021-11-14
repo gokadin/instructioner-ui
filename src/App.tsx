@@ -9,6 +9,7 @@ import {TopicModule} from "./modules/topic.module";
 import {SessionModule} from "./modules/session.module";
 import {AccountModule} from "./modules/account.module";
 import {AdminModule} from "./modules/admin.module";
+import {LandingPage} from "./pages/landing/landing.page";
 
 function App() {
     const dispatch = useDispatch()
@@ -27,6 +28,7 @@ function App() {
             <Box mt={'0px !important'} h={'full'}>
                 <BrowserRouter>
                     <Switch>
+                        <Route path="/" component={LandingPage} exact/>
                         <Route path="/account" component={AccountModule}/>
                         <Route path="/topics" component={TopicModule}/>
                         <Route path="/session" component={SessionModule}/>

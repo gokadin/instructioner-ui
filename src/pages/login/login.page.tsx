@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AmplifyGoogleButton} from "@aws-amplify/ui-react";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -55,11 +55,11 @@ export const LoginPage = () => {
         setPasswordIsValid(value !== '')
     }
 
-    // useEffect(() => {
-    //     if (isLoggedIn) {
-    //         history.push('/topics')
-    //     }
-    // }, [isLoggedIn])
+    useEffect(() => {
+        if (isLoggedIn) {
+            history.push('/topics')
+        }
+    }, [isLoggedIn])
 
     return (
         <Center h={'80vh'}>
