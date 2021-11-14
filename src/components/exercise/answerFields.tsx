@@ -28,7 +28,7 @@ export const AnswerFields = ({exercise}: Props) => {
         }))} value={selectedAnswerFieldIndex}>
             <VStack align={'left'}>
                 {exercise.answerFields.map((answerField, i) => {
-                    return <HStack align={'stretch'} alignItems={'center'}>
+                    return <HStack key={i} align={'stretch'} alignItems={'center'}>
                         {exerciseIsCompleted && correctAnswerFieldIndex === i &&
                         <CheckIcon color={'green'}/>
                         }

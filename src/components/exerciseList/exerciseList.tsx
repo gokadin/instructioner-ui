@@ -16,7 +16,7 @@ export const ExerciseList = ({exercises}: Props) => {
         <VStack align={'stretch'}>
             {exercises.map((exercise, i) => {
                 return <Flex key={i}>
-                    <Text>{i}-{exercise.id}</Text>
+                    <Text>{i}-{exercise.name}</Text>
                     <Spacer/>
                     <DeleteIcon onClick={() => dispatch(removeExercise(exercise))}/>
                 </Flex>

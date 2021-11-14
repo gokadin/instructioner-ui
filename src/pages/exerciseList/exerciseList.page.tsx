@@ -24,7 +24,7 @@ export const ExerciseListPage = () => {
             <Box py={2}>
                 <HStack>
                     <Text>Exercises for subtopic {selectedSubtopic.name}</Text>
-                    <Button rightIcon={<AddIcon/>} onClick={() => history.push('/admin/exercises/builder')}>Add</Button>
+                    <Button rightIcon={<AddIcon/>} onClick={() => history.push('/admin/builder')}>Add</Button>
                 </HStack>
             </Box>
             {exercises &&

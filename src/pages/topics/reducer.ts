@@ -20,21 +20,41 @@ const slice = createSlice({
     name: 'topic',
     initialState: initialState,
     reducers: {
-        // toggleTopicCollapse: (state, action: PayloadAction<string>) => {
-        //     state.topics[action.payload].isCollapsed = !state.topics[action.payload].isCollapsed
-        // },
+        toggleTopicCollapse: (state, action: PayloadAction<string>) => {
+            state.topics[action.payload].isOpen = !state.topics[action.payload].isOpen
+        },
         setSubtopic: (state, action: PayloadAction<string>) => {
+            state.selectedSubtopicId = action.payload
+        },
+        setTopic: (state, action: PayloadAction<string>) => {
             state.selectedSubtopicId = action.payload
         }
     },
     extraReducers: builder => {
+        builder.addCase(fetchTopics.pending, (state) => {
+            state.isTopicsLoaded = false
+        })
+        builder.addCase(fetchTopics.rejected, (state) => {
+            state.isTopicsLoaded = true
+        })
         builder.addCase(fetchTopics.fulfilled, (state, action: any) => {
             state.topicIds = Object.keys(action.payload.topic)
             state.topics = action.payload.topic
+            state.isTopicsLoaded = true
+        })
+        builder.addCase(fetchSubtopics.pending, (state, action: any) => {
+            state.topics[action.meta.arg].isSubtopicsLoaded = false
+            state.topics[action.meta.arg].isSubtopicsLoading = true
+        })
+        builder.addCase(fetchSubtopics.rejected, (state, action: any) => {
+            state.topics[action.meta.arg].isSubtopicsLoaded = true
+            state.topics[action.meta.arg].isSubtopicsLoading = false
         })
         builder.addCase(fetchSubtopics.fulfilled, (state, action: any) => {
+            state.topics[action.meta.arg].isSubtopicsLoading = false
             state.subtopicIds.push(...Object.keys(action.payload.subtopic))
             state.subtopics = {...state.subtopics, ...action.payload.subtopic}
+            state.topics[action.meta.arg].isSubtopicsLoaded = true
         })
     }
 })

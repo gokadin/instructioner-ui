@@ -1,45 +1,77 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {TopicEntity} from "../../models/topic.entity";
-import {Box, Flex, HStack, Progress, Spacer, Text, VStack} from "@chakra-ui/react";
+import {Badge, Box, Flex, HStack, Progress, Skeleton, Spacer, Text, VStack} from "@chakra-ui/react";
 import {ChevronDownIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {SubtopicList} from "./subtopics/subtopics";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../reducer";
-import {selectCompletedSubtopicCount, selectSubtopics} from "../../pages/topics/selectors";
-import {fetchSubtopics} from "../../pages/topics/reducer";
+import {selectSubtopics} from "../../pages/topics/selectors";
+import {fetchSubtopics, topicActions} from "../../pages/topics/reducer";
+import {
+    selectIsUserSubtopicsLoading,
+    selectLoadedUserSubtopicIds,
+    selectTopicCompletedSubtopics,
+    selectTopicScore
+} from "../../pages/userSubtopic/selectors";
+import {fetchUserSubtopics} from "../../pages/userSubtopic/reducer";
 
 interface Props {
     topic: TopicEntity
 }
 
 export const TopicCard = ({topic}: Props) => {
-    const subtopicCount = useSelector((state: RootState) => selectCompletedSubtopicCount(state, topic.id))
+    const completedSubtopicCount = useSelector((state: RootState) => selectTopicCompletedSubtopics(state, topic.id))
     const subtopics = useSelector((state: RootState) => selectSubtopics(state, topic.id))
-    const [isCollapsed, setIsCollapsed] = useState(true)
+    const topicScore = useSelector((state: RootState) => selectTopicScore(state, topic.id))
+    const isUserSubtopicsLoading = useSelector(selectIsUserSubtopicsLoading)
+    const loadedUserSubtopicIds = useSelector(selectLoadedUserSubtopicIds)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log('called', topic.id)
-        dispatch(fetchSubtopics(topic.id))
-    }, [dispatch, topic.id])
+        if (!topic.isSubtopicsLoaded && !topic.isSubtopicsLoading) {
+            dispatch(fetchSubtopics(topic.id))
+        }
+    }, [dispatch, topic.id, topic.isSubtopicsLoaded, topic.isSubtopicsLoading])
+
+    useEffect(() => {
+        if (subtopics.length > 0) {
+            const unloadedSubtopicIds = subtopics.map(subtopic => subtopic.id)
+                .filter(id => !isUserSubtopicsLoading[id])
+                .filter(id => !loadedUserSubtopicIds[id])
+            if (unloadedSubtopicIds.length > 0) {
+                dispatch(fetchUserSubtopics(unloadedSubtopicIds))
+            }
+        }
+    }, [dispatch, subtopics, isUserSubtopicsLoading, loadedUserSubtopicIds])
 
     return <VStack key={topic.id} align={'stretch'} borderWidth={1} borderRadius={'md'} bg={'gray.900'} pb={2}>
-        <Progress borderTopRadius={'md'} size={'xs'} colorScheme={'green'} max={subtopics.length}
-                  value={subtopicCount}/>
-        <Box px={2} onClick={() => setIsCollapsed(!isCollapsed)}>
+        <Progress borderTopRadius={'md'} size={'xs'} colorScheme={'green'}
+                  max={topic.isSubtopicsLoaded ? subtopics.length : 1}
+                  value={completedSubtopicCount}/>
+        <Box px={2} onClick={() => dispatch(topicActions.toggleTopicCollapse(topic.id))}>
             <Flex>
                 <HStack>
                     <Text fontSize={'xl'} color={'orange'}>{topic.name}</Text>
                 </HStack>
                 <Spacer/>
-                {isCollapsed ? <ChevronRightIcon/> : <ChevronDownIcon/>}
+                {topic.isOpen ? <ChevronDownIcon/> : <ChevronRightIcon/>}
             </Flex>
         </Box>
-        {isCollapsed &&
-        <Text mt={'0px !important'} px={2}
-              color={'gray.400'}>{subtopicCount}/{subtopics.length} topics</Text>
+        {!topic.isOpen &&
+        <Flex px={2}>
+            {topic.isSubtopicsLoaded
+                ?
+                <Text mt={'0px !important'} color={'gray.400'}>{completedSubtopicCount}/{subtopics.length} topics</Text>
+                : <Skeleton h={'24px'}/>
+            }
+            <Spacer/>
+            {completedSubtopicCount > 0 &&
+            <Badge borderWidth={'1px'} borderRadius={'md'} fontSize={'small'} size={'md'} bg={'transparent'}
+                   color={'orange.300'}>{topicScore}%</Badge>
+            }
+        </Flex>
         }
-        {!isCollapsed &&
+        {topic.isOpen &&
         <SubtopicList topic={topic}/>
         }
     </VStack>

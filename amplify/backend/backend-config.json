@@ -19,6 +19,10 @@
     "exercises": {
       "service": "DynamoDB",
       "providerPlugin": "awscloudformation"
+    },
+    "userSubtopics": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
     }
   },
   "function": {
@@ -121,6 +125,25 @@
           }
         }
       ]
+    },
+    "UserSubtopic": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "userSubtopics",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
     }
   },
   "auth": {
@@ -196,6 +219,20 @@
         {
           "category": "function",
           "resourceName": "Exercise",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "userSubtopicApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "UserSubtopic",
           "attributes": [
             "Name",
             "Arn"

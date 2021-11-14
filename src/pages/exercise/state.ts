@@ -5,11 +5,15 @@ export interface ExerciseState {
     exercises: Record<string, ExerciseEntity>
     currentExerciseId: string
     currentExerciseIndex: number
+    isExercisesLoaded: boolean
+    loadedSubtopicId: string
 }
 
 export const initialState: ExerciseState = {
     exerciseIds: [],
     exercises: {},
     currentExerciseId: '',
-    currentExerciseIndex: 0
+    currentExerciseIndex: 0,
+    isExercisesLoaded: false,
+    loadedSubtopicId: ''
 }

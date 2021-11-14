@@ -6,7 +6,6 @@ export const selectExercises = createSelector(
     (_: RootState, selectedSubtopicId: string | undefined) => selectedSubtopicId,
     (state, selectedSubtopicId) => state.exerciseIds.map(exerciseId => state.exercises[exerciseId])
         .filter(exercise => {
-            console.log(selectedSubtopicId);
             return exercise.subtopicId === selectedSubtopicId
         })
 )
@@ -14,6 +13,16 @@ export const selectExercises = createSelector(
 export const selectCurrentExercise = createSelector(
     (state: RootState) => state.exercise,
     (state) => state.exercises[state.currentExerciseId]
+)
+
+export const selectIsCurrentExerciseLoaded = createSelector(
+    (state: RootState) => state.exercise,
+    (state) => state.isExercisesLoaded && state.currentExerciseId in state.exercises
+)
+
+export const selectCurrentSessionSubtopicId = createSelector(
+    (state: RootState) => state.exercise,
+    (state) => state.loadedSubtopicId
 )
 
 export const selectExerciseCount = createSelector(
@@ -74,5 +83,6 @@ export const selectCorrectAnswerFieldIndex = createSelector(
 export const selectIsCorrect = createSelector(
     selectCurrentExercise,
     selectSelectedAnswerFieldIndex,
-    (exercise, selectedAnswerFieldIndex) => exercise.isCompleted && exercise.answerFields[selectedAnswerFieldIndex].isCorrect,
+    (exercise, selectedAnswerFieldIndex) => selectedAnswerFieldIndex in exercise.answerFields &&
+        exercise.answerFields[selectedAnswerFieldIndex].isCorrect,
 )

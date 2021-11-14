@@ -6,11 +6,13 @@ import {
     selectAnswerIsSelected,
     selectCorrectAnswerFieldIndex,
     selectHasHiddenHint,
+    selectIsCorrect,
     selectIsLastExercise
 } from "../../pages/exercise/selectors";
 import {ExerciseEntity} from "../../models/exercise.entity";
 import {QuestionIcon, ViewIcon} from "@chakra-ui/icons";
 import {useHistory} from "react-router-dom";
+import {userSubtopicActions} from "../../pages/userSubtopic/reducer";
 
 interface Props {
     exercise: ExerciseEntity
@@ -18,34 +20,47 @@ interface Props {
 
 export const ButtonBar = ({exercise}: Props) => {
     const correctAnswerFieldIndex = useSelector(selectCorrectAnswerFieldIndex)
+    const isCorrect = useSelector(selectIsCorrect)
     const selectedAnswerIsSelected = useSelector(selectAnswerIsSelected)
     const isLastExercise = useSelector(selectIsLastExercise)
     const hasHiddenHint = useSelector(selectHasHiddenHint)
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const handleComplete = () => {
-        history.push('/topics')
+    const handleCheckExercise = () => {
+        dispatch(exerciseActions.markCompleted(exercise.id))
+        dispatch(userSubtopicActions.completeExercise({duration: 2, isCorrect}))
+    }
+
+    const handleShowAnswer = () => {
+        dispatch(exerciseActions.showAnswer(correctAnswerFieldIndex))
+        dispatch(exerciseActions.markCompleted(exercise.id))
+        dispatch(userSubtopicActions.completeExercise({duration: 2, isCorrect: false}))
+    }
+
+    const handleNextExercise = () => {
+        if (isLastExercise) {
+            history.push('/session/complete')
+        } else {
+            dispatch(exerciseActions.next())
+        }
     }
 
     return (
-        <HStack px={4} py={2} bg={'gray.900'} mt={'0px !important'} borderBottomRadius={'md'} spacing={3}>
+        <HStack w={'full'} h={'60px'} align={'stretch'} px={4} py={2} bg={'gray.900'} mt={'0px !important'} borderBottomRadius={'md'} spacing={3}>
             <IconButton aria-label={'Show answer'} size={'md'} variant={'outline'} colorScheme={'red'}
                         icon={<ViewIcon/>}
-                        onClick={() => dispatch(exerciseActions.showAnswer(correctAnswerFieldIndex))}/>
+                        onClick={handleShowAnswer}/>
             <IconButton aria-label={'Hints'} size={'md'} variant={'outline'} colorScheme={'orange'} lineHeight={'md'}
-                        isDisabled={!hasHiddenHint}
+                        disabled={!hasHiddenHint}
                         icon={<QuestionIcon/>} onClick={() => dispatch(exerciseActions.showNextHint())}/>
-            {exercise.isCompleted && !isLastExercise &&
+            {exercise.isCompleted &&
             <Button w={'100%'} variant={'solid'} colorScheme={'green'}
-                    onClick={() => dispatch(exerciseActions.next())}>Next</Button>
+                    onClick={handleNextExercise}>Next</Button>
             }
             {!exercise.isCompleted &&
             <Button w={'100%'} variant={'outline'} colorScheme={'green'} disabled={!selectedAnswerIsSelected}
-                    onClick={() => dispatch(exerciseActions.markCompleted(exercise.id))}>Check</Button>
-            }
-            {exercise.isCompleted && isLastExercise &&
-            <Button w={'100%'} variant={'solid'} colorScheme={'green'} onClick={handleComplete}>Complete!</Button>
+                    onClick={handleCheckExercise}>Check</Button>
             }
         </HStack>
     )

@@ -3,4 +3,7 @@ export interface TopicEntity {
     id: string
     name: string
     displayName: string
+    isSubtopicsLoaded: boolean
+    isSubtopicsLoading: boolean
+    isOpen: boolean
 }

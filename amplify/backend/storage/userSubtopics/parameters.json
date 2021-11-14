@@ -1,0 +1,7 @@
+{
+    "tableName": "userSubtopics",
+    "partitionKeyName": "userId",
+    "partitionKeyType": "S",
+    "sortKeyName": "subtopicId",
+    "sortKeyType": "S"
+}

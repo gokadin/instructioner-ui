@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Container, Divider, Flex, Spacer, Tag, VStack} from "@chakra-ui/react";
+import {Box, Center, Divider, Flex, Spacer, Tag, VStack} from "@chakra-ui/react";
 import 'katex/dist/katex.min.css'
 import Latex from 'react-latex-next'
 import {ExerciseEntity} from "../../models/exercise.entity";
@@ -18,32 +18,32 @@ export const ExerciseContainer = ({exercise}: Props) => {
     const isCorrect = useSelector(selectIsCorrect)
 
     return (
-        <Container p={0} borderWidth={'1px'}>
-            <VStack align={'stretch'}>
-                <Box px={4} py={2}>
-                    <Flex alignItems={'center'} justifyContent={'space-between'} h={6}>
-                        {exercise.isCompleted && isCorrect &&
-                        <Tag colorScheme={'green'}>correct!</Tag>
-                        }
-                        {exercise.isCompleted && !isCorrect &&
-                        <Tag colorScheme={'red'}>incorrect</Tag>
-                        }
-                        <Spacer/>
-                        <EmailIcon color={'gray.400'}/>
-                    </Flex>
-                </Box>
-                <Divider mt={'0px !important'}/>
-                <Box p={4}>
-                    <Latex>{exercise.question}</Latex>
-                </Box>
-                <Hints/>
-                <Divider mt={'0px !important'}/>
-                <Box px={4} py={2}>
-                    <AnswerFields exercise={exercise}/>
-                </Box>
-                <Divider/>
+        <VStack h={'full'} align={'stretch'}>
+            <Box px={4} py={2}>
+                <Flex alignItems={'center'} justifyContent={'space-between'} h={6}>
+                    {exercise.isCompleted && isCorrect &&
+                    <Tag colorScheme={'green'}>correct!</Tag>
+                    }
+                    {exercise.isCompleted && !isCorrect &&
+                    <Tag colorScheme={'red'}>incorrect</Tag>
+                    }
+                    <Spacer/>
+                    <EmailIcon color={'gray.400'}/>
+                </Flex>
+            </Box>
+            <Divider mt={'0px !important'}/>
+            <Box p={4}>
+                <Latex>{exercise.question}</Latex>
+            </Box>
+            <Hints/>
+            <Divider mt={'0px !important'}/>
+            <Box px={4} py={2}>
+                <AnswerFields exercise={exercise}/>
+            </Box>
+            <Divider/>
+            <Center w={'100%'} h={'full'} alignItems={'flex-end'}>
                 <ButtonBar exercise={exercise}/>
-            </VStack>
-        </Container>
+            </Center>
+        </VStack>
     )
 }

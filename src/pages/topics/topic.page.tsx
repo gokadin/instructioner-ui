@@ -4,15 +4,18 @@ import {ChevronRightIcon} from "@chakra-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTopics} from "./reducer";
 import {TopicList} from "../../components/topics/topicList";
-import {selectTopics} from "./selectors";
+import {selectIsTopicsLoaded, selectTopics} from "./selectors";
 
 export const TopicPage = () => {
     const topics = useSelector(selectTopics)
+    const isTopicsLoaded = useSelector(selectIsTopicsLoaded)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchTopics('8bc82537-dab4-4f76-ab32-12764e586b6a'))
-    }, [dispatch])
+        if (!isTopicsLoaded) {
+            dispatch(fetchTopics('8bc82537-dab4-4f76-ab32-12764e586b6a'))
+        }
+    }, [dispatch, isTopicsLoaded])
 
     return (
         <VStack align={'stretch'}>
@@ -28,7 +31,7 @@ export const TopicPage = () => {
                     </BreadcrumbLink>
                 </BreadcrumbItem>
             </Breadcrumb>
-            {topics.length === 0
+            {!isTopicsLoaded
                 ? <Stack p={4}>
                     <Skeleton h={'60px'}/>
                     <Skeleton h={'60px'}/>

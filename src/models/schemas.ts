@@ -6,6 +6,7 @@ import {VariableEntity} from "./variable.entity";
 import {ExerciseEntity} from "./exercise.entity";
 import {SubjectEntity} from "./subject.entity";
 import {CourseEntity} from "./course.entity";
+import {UserSubtopicEntity} from "./userSubtopic.entity";
 
 export const subjectSchema = new schema.Entity<SubjectEntity>('subject')
 export const subjectSchemaList = new schema.Array(subjectSchema)
@@ -29,3 +30,10 @@ export const variableSchema = new schema.Entity<VariableEntity>('variable')
 
 export const exerciseSchema = new schema.Entity<ExerciseEntity>('exercise')
 export const exerciseSchemaList = new schema.Array(exerciseSchema)
+
+// ***
+
+export const userSubtopicSchema = new schema.Entity<UserSubtopicEntity>('userSubtopic', {}, {
+    idAttribute: 'subtopicId'
+})
+export const userSubtopicSchemaList = new schema.Array(userSubtopicSchema)

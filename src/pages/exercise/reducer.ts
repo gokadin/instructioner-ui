@@ -14,6 +14,21 @@ const slice = createSlice({
     name: 'exercise',
     initialState: initialState,
     reducers: {
+        beginSession: (state) => {
+            state.currentExerciseIndex = 0
+            if (!state.isExercisesLoaded) {
+                return
+            }
+
+            state.currentExerciseId = state.exerciseIds[state.currentExerciseIndex]
+            state.exerciseIds.forEach(exerciseId => {
+                state.exercises[exerciseId].isCompleted = false
+                state.exercises[exerciseId].selectedAnswerIndex = -1
+                state.exercises[exerciseId].hints.forEach(hint => {
+                    hint.isVisible = false
+                })
+            })
+        },
         setSelectedAnswerField: (state, action: PayloadAction<{ exerciseId: string, answerFieldIndex: number }>) => {
             if (state.exercises[action.payload.exerciseId].isCompleted) {
                 return
@@ -42,11 +57,22 @@ const slice = createSlice({
         }
     },
     extraReducers: builder => {
+        builder.addCase(fetchExercises.pending, (state) => {
+            state.isExercisesLoaded = false
+        })
+        builder.addCase(fetchExercises.rejected, (state) => {
+            state.isExercisesLoaded = false
+        })
         builder.addCase(fetchExercises.fulfilled, (state, action: any) => {
+            state.isExercisesLoaded = true
+            if (!action.payload.exercise) {
+                return
+            }
             const exerciseIds = Object.keys(action.payload.exercise)
             state.exerciseIds = exerciseIds
             state.exercises = action.payload.exercise
             state.currentExerciseId = exerciseIds[state.currentExerciseIndex]
+            state.loadedSubtopicId = action.meta.arg
         })
     }
 })

@@ -6,17 +6,16 @@ export const selectTopics = createSelector(
     (topic) => topic.topicIds.map(topicId => topic.topics[topicId])
 )
 
+export const selectIsTopicsLoaded = createSelector(
+    (state: RootState) => state.topic,
+    (topic) => topic.isTopicsLoaded
+)
+
 export const selectSubtopics = createSelector(
     (state: RootState) => state.topic,
     (_: RootState, topicId: string) => topicId,
     (state, topicId) => state.subtopicIds.map(subtopicId => state.subtopics[subtopicId])
         .filter(subtopic => subtopic.topicId === topicId)
-)
-
-export const selectCompletedSubtopicCount = createSelector(
-    (state: RootState) => state.topic,
-    (_: RootState, topicId: string) => topicId,
-    (state, topicId) => 0
 )
 
 export const selectSelectedSubtopic = createSelector(
