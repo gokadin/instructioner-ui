@@ -466,7 +466,7 @@ Resources:
     DependsOn: HostedUICustomResource
   HostedUICustomResourceLogPolicy:
     Type: 'AWS::IAM::Policy'
-    eroperties:
+    Properties:
       PolicyName: !Join ['-',[!Ref UserPool, 'hostedUILogPolicy']]
       Roles:
         - !Ref UserPoolClientRole
