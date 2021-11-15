@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {AmplifyGoogleButton} from "@aws-amplify/ui-react";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {signIn} from "../account/reducer";
+import {getCurrentUser, signIn} from "../account/reducer";
 import {selectIsLoggingIn, selectLoginError} from "../account/selectors";
 import {
     Alert,
@@ -54,6 +54,12 @@ export const LoginPage = () => {
         setPasswordIsValid(value !== '')
     }
 
+    const handleGoogle = async (authState: string) => {
+        if (authState.toUpperCase() === 'SIGNEDIN') {
+            dispatch(getCurrentUser())
+        }
+    }
+
     return (
         <Center h={'80vh'}>
             <form onSubmit={(e) => e.preventDefault()}>
@@ -62,8 +68,8 @@ export const LoginPage = () => {
                     <Image src={'/logo.png'} alt={'logo'}/>
                     <Heading py={4} as={'h1'}>Login</Heading>
                     <FormControl>
-                        <AmplifyGoogleButton
-                            clientId={'246749858319-dahqobrn4n4be92bcr0jmvj9b514fr90.apps.googleusercontent.com'}/>
+                        <AmplifyGoogleButton handleAuthStateChange={handleGoogle}
+                                             clientId={'246749858319-dahqobrn4n4be92bcr0jmvj9b514fr90.apps.googleusercontent.com'}/>
                     </FormControl>
                     <HStack>
                         <Divider/>

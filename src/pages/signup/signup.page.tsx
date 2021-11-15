@@ -19,7 +19,7 @@ import {
 import {AmplifyGoogleButton} from "@aws-amplify/ui-react";
 import {useHistory} from "react-router-dom";
 import validator from "validator";
-import {signUp} from "../account/reducer";
+import {getCurrentUser, signUp} from "../account/reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {selectIsSigningUp, selectIsSignUpSuccess, selectSignUpError} from "../account/selectors";
 
@@ -78,6 +78,13 @@ export const SignupPage = () => {
         setConfirmPasswordIsValid(value !== '' && value === password)
     }
 
+    const handleGoogle = async (authState: string) => {
+        console.log('google handler', authState)
+        if (authState.toUpperCase() === 'SIGNEDIN') {
+            dispatch(getCurrentUser())
+        }
+    }
+
     return (
         <Center h={'80vh'}>
             <form onSubmit={(e) => e.preventDefault()}>
@@ -86,8 +93,8 @@ export const SignupPage = () => {
                     <Image src={'/logo.png'} alt={'logo'}/>
                     <Heading py={4} as={'h1'}>Sign up</Heading>
                     <FormControl>
-                        <AmplifyGoogleButton
-                            clientId={'246749858319-dahqobrn4n4be92bcr0jmvj9b514fr90.apps.googleusercontent.com'}/>
+                        <AmplifyGoogleButton handleAuthStateChange={handleGoogle}
+                                             clientId={'246749858319-dahqobrn4n4be92bcr0jmvj9b514fr90.apps.googleusercontent.com'}/>
                         {/*<Button w={'100%'} colorScheme={'blue'}*/}
                         {/*        onClick={() => Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google})}>Continue*/}
                         {/*    with Google</Button>*/}
