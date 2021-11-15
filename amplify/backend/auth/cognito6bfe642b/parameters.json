@@ -51,7 +51,7 @@
     "hostedUIDomainName": "instructioner",
     "authProvidersUserPool": [],
     "hostedUIProviderMeta": "[]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://main.d29fbgmsj5dy37.amplifyapp.com/topics/\"],\"LogoutURLs\":[\"https://main.d29fbgmsj5dy37.amplifyapp.com/\"]}",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://instructioner/topics\"],\"LogoutURLs\":[\"https://instructioner.com/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "dependsOn": [],

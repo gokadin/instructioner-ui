@@ -1,6 +1,14 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {initialState} from "./state";
-import {amplifySignIn, amplifySignUp, SignInPayload, SignUpPayload} from "./api";
+import {amplifyCurrentUser, amplifySignIn, amplifySignOut, amplifySignUp, SignInPayload, SignUpPayload} from "./api";
+
+export const getCurrentUser = createAsyncThunk('account/getCurrentUser', async (_, thunkAPI) => {
+    try {
+        return await amplifyCurrentUser()
+    } catch (error) {
+        return thunkAPI.rejectWithValue(null)
+    }
+})
 
 export const signIn = createAsyncThunk('account/login', async (payload: SignInPayload, thunkAPI) => {
     try {
@@ -23,19 +31,46 @@ export const signUp = createAsyncThunk('account/signUp', async (payload: SignUpP
     }
 })
 
+export const signOut = createAsyncThunk('account/signOut', async () => {
+    try {
+        return await amplifySignOut()
+    } catch (error) {
+        console.log('sign out failed')
+    }
+})
+
 const slice = createSlice({
     name: 'account',
     initialState: initialState,
-    reducers: {
-        setUser: (state, action: PayloadAction<any>) => {
-            state.user = {
-                id: action.payload.attributes.sub,
-                email: action.payload.attributes.email
-            }
-        },
-    },
+    reducers: {},
     extraReducers: builder => {
+        builder.addCase(getCurrentUser.pending, (state) => {
+            state.isUserLoading = true
+            state.isUserLoaded = false
+        })
+        builder.addCase(getCurrentUser.rejected, (state) => {
+            state.isUserLoading = false
+            state.isUserLoaded = true
+            console.log('user is not authenticated')
+        })
+        builder.addCase(getCurrentUser.fulfilled, (state, action: any) => {
+            console.log('got signed in user', action)
+            state.isUserLoading = false
+            state.isUserLoaded = true
+            if (action.payload.attributes) {
+                state.user = {
+                    id: action.payload.attributes.sub,
+                    email: action.payload.attributes.email
+                }
+            } else {
+                state.user = {
+                    id: action.payload.id,
+                    email: action.payload.email
+                }
+            }
+        })
         builder.addCase(signIn.fulfilled, (state, action: any) => {
+            console.log('user signed in', action)
             state.user = {
                 id: action.payload.attributes.sub,
                 email: action.payload.attributes.email
@@ -48,6 +83,7 @@ const slice = createSlice({
             state.loginError = ''
         })
         builder.addCase(signIn.rejected, (state) => {
+            console.log('user sign in failed')
             state.isLoggingIn = false
             state.loginError = 'Invalid email or password'
         })
@@ -65,6 +101,10 @@ const slice = createSlice({
             state.isSignUpSuccess = false
             state.isSigningUp = false
             state.signUpError = action.payload
+        })
+        builder.addCase(signOut.fulfilled, (state) => {
+            state.user = {id: '', email: ''}
+            console.log('user signed out')
         })
     }
 })

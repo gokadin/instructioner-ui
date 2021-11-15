@@ -34,7 +34,7 @@
         },
         "instcommon": {
           "deploymentBucketName": "amplify-inst-temp-133404-deployment",
-          "s3Key": "amplify-builds/instcommon-LambdaLayerVersion77ad7c79-build.zip"
+          "s3Key": "amplify-builds/instcommon-LambdaLayerVersion26bc7d8f-build.zip"
         },
         "Exercise": {
           "deploymentBucketName": "amplify-inst-temp-133404-deployment",

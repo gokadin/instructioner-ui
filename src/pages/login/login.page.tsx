@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {AmplifyGoogleButton} from "@aws-amplify/ui-react";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {signIn} from "../account/reducer";
-import {selectIsLoggedIn, selectIsLoggingIn, selectLoginError} from "../account/selectors";
+import {selectIsLoggingIn, selectLoginError} from "../account/selectors";
 import {
     Alert,
     AlertIcon,
@@ -26,7 +26,6 @@ export const LoginPage = () => {
     const history = useHistory()
     const isLoggingIn = useSelector(selectIsLoggingIn)
     const loginError = useSelector(selectLoginError)
-    const isLoggedIn = useSelector(selectIsLoggedIn)
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [emailTouched, setEmailTouched] = useState(false)
@@ -54,12 +53,6 @@ export const LoginPage = () => {
         setPassword(value)
         setPasswordIsValid(value !== '')
     }
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            history.push('/topics')
-        }
-    }, [isLoggedIn])
 
     return (
         <Center h={'80vh'}>

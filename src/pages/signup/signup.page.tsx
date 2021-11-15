@@ -131,7 +131,8 @@ export const SignupPage = () => {
                     <FormControl>
                         <HStack>
                             <Text>Already have an account? </Text>
-                            <Button colorScheme={'orange'} variant={'link'} onClick={() => history.push('/account/login')}>
+                            <Button colorScheme={'orange'} variant={'link'}
+                                    onClick={() => history.push('/account/login')}>
                                 Log in</Button>
                         </HStack>
                     </FormControl>

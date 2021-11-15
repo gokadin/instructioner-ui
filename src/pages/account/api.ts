@@ -5,6 +5,10 @@ export interface SignInPayload {
     password: string
 }
 
+export const amplifyCurrentUser = () => {
+    return Auth.currentAuthenticatedUser()
+}
+
 export const amplifySignIn = (payload: SignInPayload) => {
     return Auth.signIn(payload);
 }
@@ -21,4 +25,8 @@ export const amplifySignUp = (payload: SignUpPayload) => {
             email: payload.username
         }
     });
+}
+
+export const amplifySignOut = () => {
+    return Auth.signOut();
 }

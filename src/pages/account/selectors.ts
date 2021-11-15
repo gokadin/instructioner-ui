@@ -6,14 +6,24 @@ export const selectUser = createSelector(
     (state) => state.user
 )
 
-export const selectIsLoggingIn = createSelector(
+export const selectIsLoaded = createSelector(
     (state: RootState) => state.account,
-    (state) => state.isLoggingIn
+    (state) => state.isUserLoaded
 )
 
 export const selectIsLoggedIn = createSelector(
     (state: RootState) => state.account,
     (state) => state.user.id !== ''
+)
+
+export const selectIsLoggingIn = createSelector(
+    (state: RootState) => state.account,
+    (state) => state.isLoggingIn
+)
+
+export const selectIsUserLoading = createSelector(
+    (state: RootState) => state.account,
+    (state) => state.isUserLoading
 )
 
 export const selectLoginError = createSelector(
