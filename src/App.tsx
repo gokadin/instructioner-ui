@@ -18,7 +18,7 @@ function App() {
     }, [dispatch])
 
     return (
-        <Grid className={'App'} minHeight={'100vh'}>
+        <Grid className={'App'} minHeight={'100%'}>
             <Box mt={'0px !important'} h={'full'}>
                 <BrowserRouter>
                     <Switch>

@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Center, Divider, Flex, Spacer, Tag, VStack} from "@chakra-ui/react";
+import {Box, calc, Divider, Flex, Spacer, Tag, VStack} from "@chakra-ui/react";
 import 'katex/dist/katex.min.css'
 import Latex from 'react-latex-next'
 import {ExerciseEntity} from "../../models/exercise.entity";
@@ -32,18 +32,20 @@ export const ExerciseContainer = ({exercise}: Props) => {
                 </Flex>
             </Box>
             <Divider mt={'0px !important'}/>
-            <Box p={4}>
-                <Latex>{exercise.question}</Latex>
+            <Box height={'full'} maxH={'full'} overflowY={'auto'}>
+                <Box p={4}>
+                    <Latex>{exercise.question}</Latex>
+                </Box>
+                <Hints/>
             </Box>
-            <Hints/>
-            <Divider mt={'0px !important'}/>
-            <Box px={4} py={2}>
-                <AnswerFields exercise={exercise}/>
-            </Box>
-            <Divider/>
-            <Center w={'100%'} h={'full'} alignItems={'flex-end'}>
+            <VStack w={'full'} justifyContent={'flex-end'}>
+                <Divider mt={'0px !important'}/>
+                <Box w={'full'} px={4} py={2}>
+                    <AnswerFields exercise={exercise}/>
+                </Box>
+                <Divider/>
                 <ButtonBar exercise={exercise}/>
-            </Center>
+            </VStack>
         </VStack>
     )
 }
