@@ -102,11 +102,6 @@
         }
       ]
     },
-    "instcommon": {
-      "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer",
-      "build": true
-    },
     "Exercise": {
       "build": true,
       "providerPlugin": "awscloudformation",
