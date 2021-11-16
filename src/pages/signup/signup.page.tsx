@@ -22,6 +22,7 @@ import validator from "validator";
 import {getCurrentUser, signUp} from "../account/reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {selectIsSigningUp, selectIsSignUpSuccess, selectSignUpError} from "../account/selectors";
+import { useTranslation } from 'react-i18next';
 
 export const SignupPage = () => {
     const history = useHistory()
@@ -39,12 +40,13 @@ export const SignupPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false)
     const [confirmPasswordIsValid, setConfirmPasswordIsValid] = useState(false)
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (isSigningSuccess) {
             toast({
-                title: "Account created.",
-                description: "Please verify your email",
+                title: t("account_created_success"),
+                description: t("account_created_success_description"),
                 status: "success",
                 duration: 9000,
                 isClosable: true,
@@ -91,7 +93,7 @@ export const SignupPage = () => {
                 <VStack spacing={2} p={10} bg={'gray.900'} align={'stretch'} boxShadow={'md'} rounded={'md'}
                         w={'380px'}>
                     <Image src={'/logo.png'} alt={'logo'}/>
-                    <Heading py={4} as={'h1'}>Sign up</Heading>
+                    <Heading py={4} as={'h1'}>{t("sign_up_header")}</Heading>
                     <FormControl>
                         <AmplifyGoogleButton handleAuthStateChange={handleGoogle}
                                              clientId={'246749858319-dahqobrn4n4be92bcr0jmvj9b514fr90.apps.googleusercontent.com'}/>
@@ -111,36 +113,36 @@ export const SignupPage = () => {
                     </Alert>
                     }
                     <FormControl isInvalid={emailTouched && !emailIsValid}>
-                        <FormLabel>Email</FormLabel>
-                        <Input type={'email'} placeholder={'Email'} value={email}
+                        <FormLabel>{t("email_label")}</FormLabel>
+                        <Input type={'email'} placeholder={t("email_label")} value={email}
                                onBlur={() => setEmailTouched(true)}
                                onChange={(e) => handleEmailChange(e.target.value)}/>
-                        <FormErrorMessage>Please enter a valid email</FormErrorMessage>
+                        <FormErrorMessage>{t("email_validation")}</FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={passwordTouched && !passwordIsValid}>
-                        <FormLabel>Password</FormLabel>
-                        <Input type={'password'} placeholder={'Password'} value={password}
+                        <FormLabel>{t("password_label")}</FormLabel>
+                        <Input type={'password'} placeholder={t("password_label")} value={password}
                                onBlur={() => setPasswordTouched(true)}
                                onChange={(e) => handlePasswordChange(e.target.value)}/>
-                        <FormErrorMessage>Password must be at least 8 characters long</FormErrorMessage>
+                        <FormErrorMessage>{t("password_validation")}</FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={confirmPasswordTouched && !confirmPasswordIsValid}>
-                        <FormLabel>Confirm password</FormLabel>
-                        <Input type={'password'} placeholder={'Confirm password'} value={confirmPassword}
+                        <FormLabel>{t("password_confirm_label")}</FormLabel>
+                        <Input type={'password'} placeholder={t("password_confirm_label")} value={confirmPassword}
                                onBlur={() => setConfirmPasswordTouched(true)}
                                onChange={(e) => handleConfirmPasswordChange(e.target.value)}/>
-                        <FormErrorMessage>Please enter a matching password</FormErrorMessage>
+                        <FormErrorMessage>{t("password_confirm_validation")}</FormErrorMessage>
                     </FormControl>
                     <FormControl paddingTop={2}>
                         <Button type={'submit'} w={'100%'} size={'md'} colorScheme={'orange'} isLoading={isSigningUp}
-                                loadingText={'Signing up'} onClick={submit}>Sign up</Button>
+                                loadingText={'Signing up'} onClick={submit}>{t("sign_up_btn")}</Button>
                     </FormControl>
                     <FormControl>
                         <HStack>
-                            <Text>Already have an account? </Text>
+                            <Text>{t("have_account_question")}</Text>
                             <Button colorScheme={'orange'} variant={'link'}
                                     onClick={() => history.push('/account/login')}>
-                                Log in</Button>
+                                {t("login")}</Button>
                         </HStack>
                     </FormControl>
                 </VStack>

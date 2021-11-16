@@ -21,6 +21,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import validator from "validator";
+import { useTranslation } from 'react-i18next';
 
 export const LoginPage = () => {
     const history = useHistory()
@@ -33,6 +34,7 @@ export const LoginPage = () => {
     const [password, setPassword] = useState('')
     const [passwordTouched, setPasswordTouched] = useState(false)
     const [passwordIsValid, setPasswordIsValid] = useState(false)
+    const {t} = useTranslation();
 
     const submit = async () => {
         if (!emailIsValid || !passwordIsValid) {
@@ -66,14 +68,14 @@ export const LoginPage = () => {
                 <VStack spacing={2} p={10} bg={'gray.900'} align={'stretch'} boxShadow={'md'} rounded={'md'}
                         w={'380px'}>
                     <Image src={'/logo.png'} alt={'logo'}/>
-                    <Heading py={4} as={'h1'}>Login</Heading>
+                    <Heading py={4} as={'h1'}>{t("login_header")}</Heading>
                     <FormControl>
                         <AmplifyGoogleButton handleAuthStateChange={handleGoogle}
                                              clientId={'246749858319-dahqobrn4n4be92bcr0jmvj9b514fr90.apps.googleusercontent.com'}/>
                     </FormControl>
                     <HStack>
                         <Divider/>
-                        <Text color={'gray.300'}>or</Text>
+                        <Text color={'gray.300'}>{t("or")}</Text>
                         <Divider/>
                     </HStack>
                     {!isLoggingIn && loginError !== '' &&
@@ -83,29 +85,29 @@ export const LoginPage = () => {
                     </Alert>
                     }
                     <FormControl isInvalid={emailTouched && !emailIsValid}>
-                        <FormLabel>Email</FormLabel>
-                        <Input type={'email'} placeholder={'Email'} value={email}
+                        <FormLabel>{t("email_label")}</FormLabel>
+                        <Input type={'email'} placeholder={t("email_label")} value={email}
                                onBlur={() => setEmailTouched(true)}
                                onChange={(e) => handleEmailChange(e.target.value)}/>
-                        <FormErrorMessage>Please enter a valid email</FormErrorMessage>
+                        <FormErrorMessage>{t("email_required")}</FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={passwordTouched && !passwordIsValid}>
-                        <FormLabel>Password</FormLabel>
-                        <Input type={'password'} placeholder={'Password'} value={password}
+                        <FormLabel>{t("password_label")}</FormLabel>
+                        <Input type={'password'} placeholder={t("password_label")} value={password}
                                onBlur={() => setPasswordTouched(true)}
                                onChange={(e) => handlePasswordChange(e.target.value)}/>
-                        <FormErrorMessage>Please enter a password</FormErrorMessage>
+                        <FormErrorMessage>{t("password_required")}</FormErrorMessage>
                     </FormControl>
                     <FormControl paddingTop={2}>
                         <Button type={'submit'} w={'100%'} size={'md'} colorScheme={'orange'} onClick={submit}
-                                isLoading={isLoggingIn} loadingText={'Logging in'}>Login</Button>
+                                isLoading={isLoggingIn} loadingText={'Logging in'}>{t("login_btn")}</Button>
                     </FormControl>
                     <FormControl>
                         <HStack>
-                            <Text>Don't have an account? </Text>
+                            <Text>{t("sign_up_tooltip")}</Text>
                             <Button colorScheme={'orange'} variant={'link'}
                                     onClick={() => history.push('/account/signup')}>
-                                Sign up</Button>
+                                {t("sign_up_btn")}</Button>
                         </HStack>
                     </FormControl>
                 </VStack>

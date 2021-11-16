@@ -9,6 +9,7 @@ import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 import {store} from "./reducer";
 import {Provider} from "react-redux";
+import './i18n';
 
 const isLocalhost = !!(window.location.hostname === "localhost");
 const [
