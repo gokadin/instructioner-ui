@@ -25,7 +25,7 @@ export const ExercisePage = () => {
         if (!isExerciseLoaded || currentSessionSubtopicId !== selectedSubtopic.id) {
             dispatch(fetchExercises(selectedSubtopic.id))
         }
-    }, [dispatch, history, selectedSubtopic])
+    }, [dispatch, history, selectedSubtopic, isExerciseLoaded, currentSessionSubtopicId])
 
     return (
         <VStack h={'full'} align="stretch">

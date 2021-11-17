@@ -10,6 +10,7 @@ import awsExports from "./aws-exports";
 import {store} from "./reducer";
 import {Provider} from "react-redux";
 import './i18n';
+import {BrowserRouter} from "react-router-dom";
 
 const isLocalhost = !!(window.location.hostname === "localhost");
 const [
@@ -39,7 +40,9 @@ ReactDOM.render(
         <ColorModeScript initialColorMode={theme.config.initialColorMode}/>
         <ChakraProvider theme={theme}>
             <Provider store={store}>
-                <App/>
+                <BrowserRouter>
+                    <App/>
+                </BrowserRouter>
             </Provider>
         </ChakraProvider>
     </>,
