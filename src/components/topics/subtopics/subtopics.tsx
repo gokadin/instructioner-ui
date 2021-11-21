@@ -1,5 +1,5 @@
 import React from "react";
-import {Skeleton, Stack} from "@chakra-ui/react";
+import {Skeleton, Stack, VStack} from "@chakra-ui/react";
 import {TopicEntity} from "../../../models/topic.entity";
 import {useSelector} from "react-redux";
 import {selectSubtopics} from "../../../pages/topics/selectors";
@@ -22,9 +22,9 @@ export const SubtopicList = ({topic}: Props) => {
         </Stack>
     }
 
-    return <>
+    return <VStack align={'stretch'} px={2}>
         {subtopics.map((subtopic: SubtopicEntity) => {
             return <SubtopicRow key={subtopic.id} subtopic={subtopic}/>
         })}
-    </>
+    </VStack>
 }

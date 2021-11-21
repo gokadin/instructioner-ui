@@ -5,6 +5,7 @@ import {selectCurrentUserSession} from "../userSubtopic/selectors";
 import {useHistory} from "react-router-dom";
 import {StarIcon} from "@chakra-ui/icons";
 import {completeSession} from "../userSubtopic/reducer";
+import {numStarsForScore} from "../../utils/stars";
 
 export const CompletePage = () => {
     const session = useSelector(selectCurrentUserSession)
@@ -37,9 +38,12 @@ export const CompletePage = () => {
             </Center>
             <Center h={'40px'}>
                 <HStack>
-                    <StarIcon fontSize={'xx-large'} color={'orange'}/>
-                    <StarIcon fontSize={'xx-large'} color={'orange'}/>
-                    <StarIcon fontSize={'xx-large'} color={'orange'}/>
+                    {[...Array(numStarsForScore(session.score))].map((_, i) => (
+                        <StarIcon key={i} fontSize={'xx-large'} color={'orange'}/>
+                    ))}
+                    {[...Array(3 - numStarsForScore(session.score))].map((_, i) => (
+                        <StarIcon key={i} fontSize={'xx-large'} color={'gray.500'}/>
+                    ))}
                 </HStack>
             </Center>
             <Center h={'40px'} pb={'20px'}>
