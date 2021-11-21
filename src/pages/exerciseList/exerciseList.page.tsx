@@ -7,17 +7,26 @@ import {ExerciseList} from "../../components/exerciseList/exerciseList";
 import {fetchExercises} from "../exercise/reducer";
 import {RootState} from "../../reducer";
 import {selectExercises} from "../exercise/selectors";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
+import {adminActions} from "../admin/reducer";
 
 export const ExerciseListPage = () => {
     const history = useHistory()
     const selectedSubtopic = useSelector(selectSelectedSubtopic)
-    const exercises = useSelector((state: RootState) => selectExercises(state, selectedSubtopic.id))
+    const exercises = useSelector((state: RootState) => selectExercises(state, selectedSubtopic?.id))
     const dispatch = useDispatch()
+    const {subtopicId}: any = useParams()
 
     useEffect(() => {
-        dispatch(fetchExercises(selectedSubtopic.id))
-    }, [dispatch, selectedSubtopic])
+        if (subtopicId) {
+            dispatch(adminActions.setSubtopic(subtopicId))
+            dispatch(fetchExercises(subtopicId))
+        }
+    }, [dispatch, subtopicId])
+
+    if (!selectedSubtopic) {
+        return <div></div>
+    }
 
     return (
         <VStack align={'stretch'} px={4}>

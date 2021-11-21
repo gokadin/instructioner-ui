@@ -34,7 +34,7 @@
         },
         "Exercise": {
           "deploymentBucketName": "amplify-inst-temp-133404-deployment",
-          "s3Key": "amplify-builds/Exercise-542f59733563516a6e39-build.zip"
+          "s3Key": "amplify-builds/Exercise-514d703456587433566c-build.zip"
         },
         "UserSubtopic": {
           "deploymentBucketName": "amplify-inst-temp-133404-deployment",

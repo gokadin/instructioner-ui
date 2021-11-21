@@ -1,12 +1,10 @@
 import React from "react";
 import {IconButton, Menu, MenuButton, MenuItem, MenuList} from "@chakra-ui/react";
 import {MoonIcon, SettingsIcon} from "@chakra-ui/icons";
-import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {signOut} from "../../pages/account/reducer";
 
 export const ProfileMenu = () => {
-    const history = useHistory();
     const dispatch = useDispatch()
 
     const handleSignOut = () => {

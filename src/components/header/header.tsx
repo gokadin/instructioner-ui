@@ -14,7 +14,7 @@ export const Header = () => {
         <Box p={2}>
             <HStack>
                 <IconButton icon={<HamburgerIcon/>} aria-label={'menu'}/>
-                <Image src={'/logo.png'} alt={'logo'}/>
+                <Image src={'/logo_no_text.png'} h={'30px'} alt={'logo'}/>
                 <Spacer/>
                 {!isLoggedIn
                     ? <Button size={'sm'} onClick={() => history.push('/account/login')}>Login</Button>

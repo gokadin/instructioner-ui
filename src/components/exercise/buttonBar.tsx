@@ -47,19 +47,19 @@ export const ButtonBar = ({exercise}: Props) => {
     }
 
     return (
-        <HStack w={'full'} h={'60px'} align={'stretch'} px={4} py={2} bg={'gray.900'} mt={'0px !important'} borderBottomRadius={'md'} spacing={3}>
-            <IconButton aria-label={'Show answer'} size={'md'} variant={'outline'} colorScheme={'red'}
+        <HStack w={'full'} alignItems={'center'} h={'16'} align={'stretch'} px={4} py={2} bg={'gray.900'} mt={'0px !important'} borderBottomRadius={'md'} spacing={3}>
+            <IconButton aria-label={'Show answer'} size={'lg'} variant={'outline'} colorScheme={'red'}
                         icon={<ViewIcon/>}
                         onClick={handleShowAnswer}/>
-            <IconButton aria-label={'Hints'} size={'md'} variant={'outline'} colorScheme={'orange'} lineHeight={'md'}
+            <IconButton aria-label={'Hints'} size={'lg'} variant={'outline'} colorScheme={'orange'} lineHeight={'md'}
                         disabled={!hasHiddenHint}
                         icon={<QuestionIcon/>} onClick={() => dispatch(exerciseActions.showNextHint())}/>
             {exercise.isCompleted &&
-            <Button w={'100%'} variant={'solid'} colorScheme={'green'}
+            <Button w={'100%'} h={'100%'} variant={'solid'} colorScheme={'green'}
                     onClick={handleNextExercise}>Next</Button>
             }
             {!exercise.isCompleted &&
-            <Button w={'100%'} variant={'outline'} colorScheme={'green'} disabled={!selectedAnswerIsSelected}
+            <Button w={'100%'} h={'100%'} variant={'outline'} colorScheme={'green'} disabled={!selectedAnswerIsSelected}
                     onClick={handleCheckExercise}>Check</Button>
             }
         </HStack>

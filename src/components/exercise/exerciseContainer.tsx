@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, calc, Divider, Flex, Spacer, Tag, VStack} from "@chakra-ui/react";
+import {Box, Divider, Flex, Spacer, Tag, VStack} from "@chakra-ui/react";
 import 'katex/dist/katex.min.css'
 import Latex from 'react-latex-next'
 import {ExerciseEntity} from "../../models/exercise.entity";

@@ -52,10 +52,10 @@ export const SignupPage = () => {
                 isClosable: true,
             })
         }
-    }, [isSigningSuccess])
+    }, [isSigningSuccess, toast, t])
 
     const submit = async () => {
-        if (!emailIsValid || !passwordIsValid) {
+        if (!emailIsValid || !passwordIsValid || !confirmPasswordIsValid) {
             setEmailTouched(true)
             setPasswordTouched(true)
             setConfirmPasswordTouched(true)

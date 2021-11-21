@@ -12,6 +12,7 @@ var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware'
 var bodyParser = require('body-parser')
 var express = require('express')
 const {randomUUID} = require("crypto");
+const {evaluate} = require("mathjs");
 
 AWS.config.update({region: process.env.TABLE_REGION});
 
@@ -54,12 +55,66 @@ const convertUrlType = (param, type) => {
     }
 }
 
+const VARIABLE_SYMBOL = '@var'
+const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
+
+const SOLVE_SYMBOL = '@solve'
+const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z]+)\\)`
+
+const processExercise = (exercise) => {
+    let variables = resolveVariables(exercise.variables)
+
+    return {
+        ...exercise,
+        question: parseContent(exercise.question, variables),
+        answerFields: shuffleArray(exercise.answerFields.map(answerField => {
+            return {
+                ...answerField,
+                content: parseContent(answerField.content, variables)
+            }
+        })),
+        hints: exercise.hints.map(hint => {
+            return {
+                ...hint,
+                content: parseContent(hint.content, variables)
+            }
+        })
+    }
+}
+
+const resolveVariables = (variables) => {
+    let resolved = {}
+    variables.forEach(variable => {
+        resolved[variable.name] = variable.default.toString()
+    })
+    return resolved
+}
+
+const parseContent = (content, variables) => {
+    const variableRegex = new RegExp(VARIABLE_REGEX, 'gm')
+    let result = content.replace(variableRegex, (match, contents) => {
+        return variables[contents]
+    })
+
+    const solveRegex = new RegExp(SOLVE_REGEX, 'gm')
+    result = result.replace(solveRegex, (match, contents) => {
+        return evaluate(contents)
+    })
+
+    return result
+}
+
+const shuffleArray = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]]
+    }
+    return a
+}
+
 /********************************
  * HTTP Get method for list objects *
  ********************************/
-
-const VARIABLE_SYMBOL = '@var'
-const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
 
 app.get(path + hashKeyPath, function (req, res) {
     var condition = {}
@@ -88,54 +143,10 @@ app.get(path + hashKeyPath, function (req, res) {
             res.statusCode = 500;
             res.json({error: 'Could not load items: ' + err});
         } else {
-            let parsed = data.Items.map(item => {
-                let variables = resolveVariables(item.variables)
-
-                return {
-                    ...item,
-                    question: parseContent(item.question, variables),
-                    answerFields: shuffleArray(item.answerFields.map(answerField => {
-                        return {
-                            ...answerField,
-                            content: parseContent(answerField.content, variables)
-                        }
-                    })),
-                    hints: item.hints.map(hint => {
-                        return {
-                            ...hint,
-                            content: parseContent(hint.content, variables)
-                        }
-                    })
-                }
-            })
-
-            res.json(parsed);
+            res.json(data.Items.map(processExercise));
         }
     });
 });
-
-const resolveVariables = (variables) => {
-    let resolved = {}
-    variables.forEach(variable => {
-        resolved[variable.name] = variable.default.toString()
-    })
-    return resolved
-}
-
-const parseContent = (content, variables) => {
-    const regex = new RegExp(VARIABLE_REGEX, 'gm')
-    return content.replace(regex, (match, contents) => {
-        return variables[contents]
-    })
-}
-
-const shuffleArray = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]]
-    }
-    return a
-}
 
 /*****************************************
  * HTTP Get method for get single object *

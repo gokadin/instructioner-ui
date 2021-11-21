@@ -28,14 +28,14 @@ export const AnswerFields = ({exercise}: Props) => {
         }))} value={selectedAnswerFieldIndex}>
             <VStack align={'left'}>
                 {exercise.answerFields.map((answerField, i) => {
-                    return <HStack key={i} align={'stretch'} alignItems={'center'}>
+                    return <HStack px={2} py={2} borderWidth={1} borderRadius={8} borderColor={'gray.700'} key={i} align={'stretch'} alignItems={'center'}>
                         {exerciseIsCompleted && correctAnswerFieldIndex === i &&
                         <CheckIcon color={'green'}/>
                         }
                         {exerciseIsCompleted && correctAnswerFieldIndex !== i &&
                         <SmallCloseIcon color={'red'}/>
                         }
-                        <Radio key={i} value={i} w={'100%'}>
+                        <Radio isFullWidth={true} key={i} value={i} w={'100%'}>
                             <Latex>{answerField.content}</Latex>
                         </Radio>
                     </HStack>
