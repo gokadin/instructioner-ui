@@ -6,8 +6,7 @@ import {normalize} from "normalizr";
 import {userSubtopicSchemaList} from "../../models/schemas";
 
 export const fetchUserSubtopics = createAsyncThunk('userSubtopic/fetchUserSubtopic', async (subtopicIds: string[], thunkAPI) => {
-    const state = thunkAPI.getState() as RootState
-    const data = await getUserSubtopics({subtopicIds: subtopicIds, userId: state.account.user.id})
+    const data = await getUserSubtopics(subtopicIds)
     const normalized = normalize(data, userSubtopicSchemaList)
     if (!normalized.entities.userSubtopic) {
         return thunkAPI.rejectWithValue(null)
@@ -15,10 +14,9 @@ export const fetchUserSubtopics = createAsyncThunk('userSubtopic/fetchUserSubtop
     return normalized.entities
 })
 
-export const completeSession = createAsyncThunk('userSubtopic/completeSession', (_, thunkAPI) => {
+export const completeSession = createAsyncThunk('userSubtopic/completeSession', async (_, thunkAPI) => {
     const state = thunkAPI.getState() as RootState
-    return putUserSubtopic({
-        userId: state.account.user.id,
+    return await putUserSubtopic({
         subtopicId: state.topic.selectedSubtopicId,
         exerciseCount: state.userSubtopic.currentSession.exerciseCount,
         correctExerciseCount: state.userSubtopic.currentSession.correctExerciseCount,
@@ -31,10 +29,9 @@ const slice = createSlice({
     name: 'userSubtopic',
     initialState: initialState,
     reducers: {
-        beginSession: (state, action: PayloadAction<{ userId: string, subtopicId: string }>) => {
+        beginSession: (state, action: PayloadAction<string>) => {
             state.currentSession = {
-                userId: action.payload.userId,
-                subtopicId: action.payload.subtopicId,
+                subtopicId: action.payload,
                 exerciseCount: 0,
                 correctExerciseCount: 0,
                 duration: 0,

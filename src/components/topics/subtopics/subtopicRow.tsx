@@ -6,7 +6,6 @@ import {topicActions} from "../../../pages/topics/reducer";
 import {userSubtopicActions} from "../../../pages/userSubtopic/reducer";
 import {exerciseActions} from "../../../pages/exercise/reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUser} from "../../../pages/account/selectors";
 import {useHistory} from "react-router-dom";
 import {selectUserSubtopic} from "../../../pages/userSubtopic/selectors";
 import {RootState} from "../../../reducer";
@@ -16,14 +15,13 @@ interface Props {
 }
 
 export const SubtopicRow = ({subtopic}: Props) => {
-    const user = useSelector(selectUser)
     const userSubtopic = useSelector((state: RootState) => selectUserSubtopic(state, subtopic.id))
     const dispatch = useDispatch()
     const history = useHistory()
 
     const beginSession = async (subtopicId: string) => {
         await dispatch(topicActions.setSubtopic(subtopicId))
-        await dispatch(userSubtopicActions.beginSession({userId: user.id, subtopicId}))
+        await dispatch(userSubtopicActions.beginSession(subtopicId))
         await dispatch(exerciseActions.beginSession())
         history.push('/session')
     }

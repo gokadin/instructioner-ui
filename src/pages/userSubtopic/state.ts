@@ -12,7 +12,6 @@ export const initialState: UserSubtopicState = {
     userSubtopicIds: [],
     userSubtopics: {},
     currentSession: {
-        userId: '',
         subtopicId: '',
         exerciseCount: 0,
         correctExerciseCount: 0,

@@ -139,6 +139,11 @@
           }
         }
       ]
+    },
+    "instcommon": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
     }
   },
   "auth": {

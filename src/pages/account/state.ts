@@ -12,7 +12,7 @@ export interface AccountState {
 }
 
 export const initialState: AccountState = {
-    user: {id: '', email: ''},
+    user: {email: ''},
     isUserLoading: false,
     isUserLoaded: false,
     isLoggingIn: false,

@@ -13,7 +13,7 @@ export const selectIsLoaded = createSelector(
 
 export const selectIsLoggedIn = createSelector(
     (state: RootState) => state.account,
-    (state) => state.user.id !== ''
+    (state) => state.user.email !== ''
 )
 
 export const selectIsLoggingIn = createSelector(

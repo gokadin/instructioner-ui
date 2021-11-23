@@ -4,7 +4,14 @@
       "name": "/exercises",
       "lambdaFunction": "Exercise",
       "privacy": {
-        "open": true
+        "private": true,
+        "auth": [
+          "/POST",
+          "/GET",
+          "/PUT",
+          "/PATCH",
+          "/DELETE"
+        ]
       },
       "policyResourceName": "/exercises"
     }
@@ -17,7 +24,7 @@
     }
   ],
   "privacy": {
-    "auth": 0,
+    "auth": 1,
     "unauth": 0,
     "authRoleName": "amplify-inst-temp-133404-authRole",
     "unAuthRoleName": "amplify-inst-temp-133404-unauthRole"

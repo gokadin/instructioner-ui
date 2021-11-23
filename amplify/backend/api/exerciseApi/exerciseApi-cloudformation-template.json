@@ -150,6 +150,12 @@
                     }
                   },
                   
+                    "security": [
+                        {
+                          "sigv4": []
+                        }
+                      ],
+                  
                   "x-amazon-apigateway-integration": {
                     "responses": {
                       "default": {
@@ -248,6 +254,12 @@
                       }
                     }
                   },
+                  
+                    "security": [
+                        {
+                          "sigv4": []
+                        }
+                      ],
                   
                   "x-amazon-apigateway-integration": {
                     "responses": {

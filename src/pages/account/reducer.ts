@@ -59,12 +59,10 @@ const slice = createSlice({
             state.isUserLoaded = true
             if (action.payload.attributes) {
                 state.user = {
-                    id: action.payload.attributes.sub,
                     email: action.payload.attributes.email
                 }
             } else {
                 state.user = {
-                    id: action.payload.id,
                     email: action.payload.email
                 }
             }
@@ -72,7 +70,6 @@ const slice = createSlice({
         builder.addCase(signIn.fulfilled, (state, action: any) => {
             console.log('user signed in', action)
             state.user = {
-                id: action.payload.attributes.sub,
                 email: action.payload.attributes.email
             }
             state.isLoggingIn = false
@@ -87,7 +84,7 @@ const slice = createSlice({
             state.isLoggingIn = false
             state.loginError = 'Invalid email or password'
         })
-        builder.addCase(signUp.fulfilled, (state, action: any) => {
+        builder.addCase(signUp.fulfilled, (state) => {
             state.isSignUpSuccess = true
             state.isSigningUp = false
             state.signUpError = ''
@@ -103,7 +100,7 @@ const slice = createSlice({
             state.signUpError = action.payload
         })
         builder.addCase(signOut.fulfilled, (state) => {
-            state.user = {id: '', email: ''}
+            state.user = {email: ''}
             console.log('user signed out')
         })
     }

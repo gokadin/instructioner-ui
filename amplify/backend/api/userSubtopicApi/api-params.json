@@ -1,35 +1,43 @@
 {
-  "paths": [
-    {
-      "name": "/user-subtopics",
-      "lambdaFunction": "UserSubtopic",
-      "privacy": {
-        "open": true
-      },
-      "policyResourceName": "/user-subtopics"
-    }
-  ],
-  "resourceName": "userSubtopicApi",
-  "apiName": "userSubtopicApi",
-  "functionArns": [
-    {
-      "lambdaFunction": "UserSubtopic"
-    }
-  ],
-  "privacy": {
-    "auth": 0,
-    "unauth": 0,
-    "authRoleName": "amplify-inst-temp-133404-authRole",
-    "unAuthRoleName": "amplify-inst-temp-133404-unauthRole"
-  },
-  "dependsOn": [
-    {
-      "category": "function",
-      "resourceName": "UserSubtopic",
-      "attributes": [
-        "Name",
-        "Arn"
-      ]
-    }
-  ]
+    "paths": [
+        {
+            "name": "/user-subtopics",
+            "lambdaFunction": "UserSubtopic",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/user-subtopics"
+        }
+    ],
+    "resourceName": "userSubtopicApi",
+    "apiName": "userSubtopicApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "UserSubtopic"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-inst-temp-133404-authRole",
+        "unAuthRoleName": "amplify-inst-temp-133404-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "UserSubtopic",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "a0248363"
 }
