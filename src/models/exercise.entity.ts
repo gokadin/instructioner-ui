@@ -12,5 +12,6 @@ export interface ExerciseEntity {
     selectedAnswerIndex: number
     answerFields: AnswerFieldEntity[]
     hints: HintEntity[]
+    difficulty: number
     isCompleted: boolean
 }

@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "cognitoConfig": {
+    "authSelections": "identityPoolAndUserPool",
+    "requiredAttributes": [
+      "email"
+    ],
+    "resourceName": "cognito6bfe642b",
+    "serviceName": "Cognito",
+    "useDefault": "defaultSocial",
+    "userpoolClientReadAttributes": [
+      "email"
+    ],
+    "userpoolClientWriteAttributes": [
+      "email"
+    ],
+    "aliasAttributes": [],
+    "resourceNameTruncated": "inst6bfe642b",
+    "sharedId": "6bfe642b",
+    "userPoolGroupList": [],
+    "userPoolName": "inst_userpool_6bfe642b",
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientSetAttributes": false,
+    "userpoolClientGenerateSecret": false,
+    "userpoolClientLambdaRole": "inst6bfe642b_userpoolclient_lambda_role",
+    "passwordPolicyCharacters": [],
+    "passwordPolicyMinLength": 8,
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+      "SMS Text Message"
+    ],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "autoVerifiedAttributes": [
+      "email"
+    ],
+    "hostedUI": true,
+    "hostedUIDomainName": "instructioner",
+    "hostedUIProviderMeta": "[]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://instructioner/topics\"],\"LogoutURLs\":[\"https://instructioner.com/\"]}",
+    "authProvidersUserPool": [],
+    "identityPoolName": "inst_identitypool_6bfe642b",
+    "allowUnauthenticatedIdentities": false,
+    "authProviders": []
+  }
+}

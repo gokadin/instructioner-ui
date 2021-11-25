@@ -26,7 +26,7 @@ export const SubtopicRow = ({subtopic}: Props) => {
         history.push('/session')
     }
 
-    return <Box key={subtopic.id} px={2} py={1} borderWidth={1} borderColor={'gray.700'} borderRadius={8}>
+    return <Box key={subtopic.id} px={2} py={2} borderWidth={1} borderColor={'gray.700'} borderRadius={8}>
         <Flex onClick={() => beginSession(subtopic.id)} alignItems={'center'}>
             <Text>{subtopic.name}</Text>
             <Spacer/>

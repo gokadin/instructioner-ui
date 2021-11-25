@@ -47,5 +47,53 @@
         }
       }
     }
+  },
+  "migration": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-inst-migration-164218-authRole",
+      "UnauthRoleArn": "arn:aws:iam::691567916614:role/amplify-inst-migration-164218-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::691567916614:role/amplify-inst-migration-164218-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-inst-migration-164218-deployment",
+      "UnauthRoleName": "amplify-inst-migration-164218-unauthRole",
+      "StackName": "amplify-inst-migration-164218",
+      "StackId": "arn:aws:cloudformation:us-west-2:691567916614:stack/amplify-inst-migration-164218/8dc52000-4d88-11ec-9f1b-02858ed4c805",
+      "AmplifyAppId": "d29fbgmsj5dy37"
+    },
+    "categories": {
+      "auth": {
+        "cognito6bfe642b": {}
+      },
+      "function": {
+        "Subject": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/Subject-4b6d5255587776772f4b-build.zip"
+        },
+        "Course": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/Course-396d4a614b6f72473158-build.zip"
+        },
+        "Topic": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/Topic-4c47636354577154617a-build.zip"
+        },
+        "Subtopic": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/Subtopic-643733366e6a4871544f-build.zip"
+        },
+        "Exercise": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/Exercise-514d703456587433566c-build.zip"
+        },
+        "UserSubtopic": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/UserSubtopic-476656794a7649355a54-build.zip"
+        },
+        "instcommon": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/instcommon-LambdaLayerVersionec0388c8-build.zip"
+        }
+      }
+    }
   }
 }
