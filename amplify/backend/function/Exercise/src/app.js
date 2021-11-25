@@ -64,7 +64,7 @@ const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z]+)\\)`
 const processExercise = (exercise) => {
     let variables = resolveVariables(exercise.variables)
 
-    return {
+    const parsed = {
         ...exercise,
         question: parseContent(exercise.question, variables),
         answerFields: shuffleArray(exercise.answerFields.map(answerField => {
@@ -80,6 +80,8 @@ const processExercise = (exercise) => {
             }
         })
     }
+
+    return parsed.sort((a, b) => (a.difficulty < b.difficulty) ? 1 : -1)
 }
 
 const resolveVariables = (variables) => {
