@@ -13,6 +13,7 @@ export const createExercise = createAsyncThunk('builder/createExercise', async (
     return await postExercise({
         subtopicId: state.admin.selectedSubtopicId,
         name: state.builder.name,
+        difficulty: state.builder.difficulty,
         question: state.builder.question,
         answerFields: state.builder.answerFields,
         hints: state.builder.hints,
@@ -53,6 +54,9 @@ const slice = createSlice({
         setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload
         },
+        setDifficulty: (state, action: PayloadAction<number>) => {
+            state.difficulty = action.payload
+        },
         setQuestionContent: (state, action: PayloadAction<string>) => {
             state.question = action.payload
         },
@@ -69,6 +73,12 @@ const slice = createSlice({
 
             state.variableIds.push(action.payload.name)
             state.variables = {...state.variables, [action.payload.name]: action.payload}
+        },
+        removeVariable: (state, action: PayloadAction<string>) => {
+            if (state.variableIds.includes(action.payload)) {
+                state.variableIds.splice(state.variableIds.indexOf(action.payload), 1)
+                delete state.variables[action.payload]
+            }
         },
         setVariableRangeStart: (state, action: PayloadAction<{ name: string, value: string }>) => {
             state.variables[action.payload.name].rangeStart = action.payload.value
@@ -93,6 +103,15 @@ const slice = createSlice({
         },
         removeHint: (state, action: PayloadAction<number>) => {
             state.hints.splice(action.payload, 1)
+        },
+        clearState: (state) => {
+            state.name = initialState.name
+            state.question = initialState.question
+            state.difficulty = initialState.difficulty
+            state.variableIds = initialState.variableIds
+            state.variables = initialState.variables
+            state.answerFields = initialState.answerFields
+            state.hints = initialState.hints
         }
     },
     extraReducers: builder => {

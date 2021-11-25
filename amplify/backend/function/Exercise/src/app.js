@@ -61,10 +61,18 @@ const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
 const SOLVE_SYMBOL = '@solve'
 const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z]+)\\)`
 
+const processExercises = (exercises) => {
+    const parsed = exercises.map(processExercise)
+
+    parsed.sort((a, b) => (a.difficulty < b.difficulty) ? -1 : 1)
+
+    return parsed
+}
+
 const processExercise = (exercise) => {
     let variables = resolveVariables(exercise.variables)
 
-    const parsed = {
+    return {
         ...exercise,
         question: parseContent(exercise.question, variables),
         answerFields: shuffleArray(exercise.answerFields.map(answerField => {
@@ -80,8 +88,6 @@ const processExercise = (exercise) => {
             }
         })
     }
-
-    return parsed.sort((a, b) => (a.difficulty < b.difficulty) ? 1 : -1)
 }
 
 const resolveVariables = (variables) => {
@@ -145,7 +151,7 @@ app.get(path + hashKeyPath, function (req, res) {
             res.statusCode = 500;
             res.json({error: 'Could not load items: ' + err});
         } else {
-            res.json(data.Items.map(processExercise));
+            res.json(processExercises(data.Items));
         }
     });
 });

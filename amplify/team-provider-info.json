@@ -83,7 +83,7 @@
         },
         "Exercise": {
           "deploymentBucketName": "amplify-inst-migration-164218-deployment",
-          "s3Key": "amplify-builds/Exercise-514d703456587433566c-build.zip"
+          "s3Key": "amplify-builds/Exercise-30795449493861443731-build.zip"
         },
         "UserSubtopic": {
           "deploymentBucketName": "amplify-inst-migration-164218-deployment",
@@ -91,7 +91,7 @@
         },
         "instcommon": {
           "deploymentBucketName": "amplify-inst-migration-164218-deployment",
-          "s3Key": "amplify-builds/instcommon-LambdaLayerVersionec0388c8-build.zip"
+          "s3Key": "amplify-builds/instcommon-LambdaLayerVersione80a6805-build.zip"
         }
       }
     }

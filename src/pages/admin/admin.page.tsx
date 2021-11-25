@@ -8,10 +8,10 @@ import {CourseFormControl} from "../../components/admin/courseFormControl";
 import {TopicFormControl} from "../../components/admin/topicFormControl";
 import {SubtopicFormControl} from "../../components/admin/subtopicFormControl";
 import {useHistory} from "react-router-dom";
-import {selectSelectedSubtopic} from "./selectors";
+import {selectSelectedSubtopicId} from "./selectors";
 
 export const AdminPage = () => {
-    const selectedSubtopic = useSelector(selectSelectedSubtopic)
+    const selectedSubtopicId = useSelector(selectSelectedSubtopicId)
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -28,8 +28,8 @@ export const AdminPage = () => {
             <FormControl>
                 <Flex pt={4}>
                     <Spacer/>
-                    <Button colorScheme={'blue'} rightIcon={<ArrowForwardIcon/>} disabled={!selectedSubtopic}
-                            onClick={() => history.push(`/admin/${selectedSubtopic.id}/exercises`)}>next</Button>
+                    <Button colorScheme={'blue'} rightIcon={<ArrowForwardIcon/>} disabled={!selectedSubtopicId}
+                            onClick={() => history.push(`/admin/${selectedSubtopicId}/exercises`)}>next</Button>
                 </Flex>
             </FormControl>
         </VStack>

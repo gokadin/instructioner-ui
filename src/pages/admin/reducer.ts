@@ -2,11 +2,15 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {initialState} from "./state";
 import {
     getCourses,
-    getSubjects, getSubtopics, getTopics,
+    getSubjects,
+    getSubtopics,
+    getTopics,
     postCourse,
     PostCourseRequest,
     postSubject,
-    PostSubjectRequest, postSubtopic, PostSubtopicRequest,
+    PostSubjectRequest,
+    postSubtopic,
+    PostSubtopicRequest,
     postTopic,
     PostTopicRequest
 } from "./api";

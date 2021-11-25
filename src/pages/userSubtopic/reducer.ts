@@ -45,6 +45,13 @@ const slice = createSlice({
             }
             state.currentSession.duration += action.payload.duration
             state.currentSession.score = Math.round(100 * state.currentSession.correctExerciseCount / state.currentSession.exerciseCount)
+        },
+        clearState: (state) => {
+            state.userSubtopicIds = initialState.userSubtopicIds
+            state.userSubtopics = initialState.userSubtopics
+            state.currentSession = initialState.currentSession
+            state.isUserSubtopicsLoading = initialState.isUserSubtopicsLoading
+            state.isUserSubtopicsLoaded = initialState.isUserSubtopicsLoaded
         }
     },
     extraReducers: builder => {

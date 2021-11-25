@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Box, Button, HStack, Text, VStack} from "@chakra-ui/react";
 import {AddIcon} from "@chakra-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {selectSelectedSubtopic} from "../admin/selectors";
+import {selectSelectedSubtopicId} from "../admin/selectors";
 import {ExerciseList} from "../../components/exerciseList/exerciseList";
 import {fetchExercises} from "../exercise/reducer";
 import {RootState} from "../../reducer";
@@ -12,8 +12,8 @@ import {adminActions} from "../admin/reducer";
 
 export const ExerciseListPage = () => {
     const history = useHistory()
-    const selectedSubtopic = useSelector(selectSelectedSubtopic)
-    const exercises = useSelector((state: RootState) => selectExercises(state, selectedSubtopic?.id))
+    const selectedSubtopicId = useSelector(selectSelectedSubtopicId)
+    const exercises = useSelector((state: RootState) => selectExercises(state, selectedSubtopicId))
     const dispatch = useDispatch()
     const {subtopicId}: any = useParams()
 
@@ -24,16 +24,13 @@ export const ExerciseListPage = () => {
         }
     }, [dispatch, subtopicId])
 
-    if (!selectedSubtopic) {
-        return <div></div>
-    }
-
     return (
         <VStack align={'stretch'} px={4}>
             <Box py={2}>
                 <HStack>
-                    <Text>Exercises for subtopic {selectedSubtopic.name}</Text>
-                    <Button rightIcon={<AddIcon/>} onClick={() => history.push('/admin/builder')}>Add</Button>
+                    <Text>Exercises for subtopic {subtopicId}</Text>
+                    <Button rightIcon={<AddIcon/>}
+                            onClick={() => history.push(`/admin/${subtopicId}/builder`)}>Add</Button>
                 </HStack>
             </Box>
             {exercises &&

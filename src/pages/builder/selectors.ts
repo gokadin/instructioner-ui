@@ -39,3 +39,8 @@ export const selectQuestion = createSelector(
     (state: RootState) => state.builder,
     (state) => state.question
 )
+
+export const selectDifficulty = createSelector(
+    (state: RootState) => state.builder,
+    (state) => state.difficulty
+)

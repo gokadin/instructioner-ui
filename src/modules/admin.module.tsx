@@ -29,9 +29,9 @@ export const AdminModule = () => {
             <Box bg={'black'} marginBottom={2}>
                 <Header/>
             </Box>
-            <Route path="/admin/topics" component={AdminPage} exact/>
+            <Route path="/admin" component={AdminPage} exact/>
             <Route path="/admin/:subtopicId/exercises" component={ExerciseListPage}/>
-            <Route path="/admin/builder" component={BuilderPage}/>
+            <Route path="/admin/:subtopicId/builder" component={BuilderPage}/>
         </>
     )
 }

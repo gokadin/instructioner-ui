@@ -9,6 +9,7 @@ const EXERCISE_API_PATH = 'exercises'
 export interface PostExercisePayload {
     subtopicId: string
     name: string
+    difficulty: number
     question: string
     hints: HintEntity[]
     answerFields: AnswerFieldEntity[]

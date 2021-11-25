@@ -39,11 +39,7 @@ export const selectSelectedTopic = createSelector(
     (state) => state.selectedTopicId === '' ? undefined : state.topics[state.selectedTopicId]
 )
 
-export const selectSelectedSubtopic = createSelector(
+export const selectSelectedSubtopicId = createSelector(
     (state: RootState) => state.admin,
-    (state) => state.selectedSubtopicId === '' ? {
-        id: '8822c8a6-71ac-4316-95a1-eea8a73990f9',
-        name: 'test',
-        displayName: 'test'
-    } : state.subtopics[state.selectedSubtopicId]
+    (state) => state.selectedSubtopicId
 )

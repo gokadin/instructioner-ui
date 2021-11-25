@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
 import {
-    Button,
+    Button, ButtonGroup,
     FormControl,
     FormLabel,
     Input,
@@ -25,6 +25,11 @@ interface Props {
 export const VariableModal = ({variable, isOpen, onClose}: Props) => {
     const initialRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const dispatch = useDispatch()
+
+    const handleRemove = () => {
+        dispatch(builderActions.removeVariable(variable.name))
+        onClose()
+    }
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={initialRef}>
@@ -61,7 +66,10 @@ export const VariableModal = ({variable, isOpen, onClose}: Props) => {
                     </FormControl>
                 </ModalBody>
                 <ModalFooter>
-                    <Button onClick={onClose}>Close</Button>
+                    <ButtonGroup>
+                        <Button color={'red.300'} onClick={handleRemove}>Remove</Button>
+                        <Button onClick={onClose}>Close</Button>
+                    </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
         </Modal>

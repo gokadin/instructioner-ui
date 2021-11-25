@@ -5,6 +5,7 @@ import {HintEntity} from "../../models/hint.entity";
 export interface BuilderState {
     name: string
     question: string
+    difficulty: number
     variableIds: string[],
     variables: Record<string, VariableEntity>
     answerFields: AnswerFieldEntity[]
@@ -14,6 +15,7 @@ export interface BuilderState {
 export const initialState: BuilderState = {
     question: '',
     name: '',
+    difficulty: 0,
     variableIds: [],
     variables: {},
     answerFields: [{
