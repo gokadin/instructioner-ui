@@ -58,7 +58,8 @@
       "UnauthRoleName": "amplify-inst-migration-164218-unauthRole",
       "StackName": "amplify-inst-migration-164218",
       "StackId": "arn:aws:cloudformation:us-west-2:691567916614:stack/amplify-inst-migration-164218/8dc52000-4d88-11ec-9f1b-02858ed4c805",
-      "AmplifyAppId": "d29fbgmsj5dy37"
+      "AmplifyAppId": "d29fbgmsj5dy37",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-inst-migration-164218-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -92,6 +93,10 @@
         "instcommon": {
           "deploymentBucketName": "amplify-inst-migration-164218-deployment",
           "s3Key": "amplify-builds/instcommon-LambdaLayerVersione80a6805-build.zip"
+        },
+        "userSettings": {
+          "deploymentBucketName": "amplify-inst-migration-164218-deployment",
+          "s3Key": "amplify-builds/userSettings-6837707162794231444c-build.zip"
         }
       }
     }

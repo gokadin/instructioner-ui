@@ -12,7 +12,7 @@ import {
     HStack,
     Image,
     Input,
-    Text,
+    Text, useColorModeValue,
     useToast,
     VStack
 } from "@chakra-ui/react";
@@ -40,6 +40,8 @@ export const SignupPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false)
     const [confirmPasswordIsValid, setConfirmPasswordIsValid] = useState(false)
+    const cardColor = useColorModeValue('white', 'gray.900')
+    const orColor = useColorModeValue('gray.700', 'gray.300')
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -88,9 +90,9 @@ export const SignupPage = () => {
     }
 
     return (
-        <Center h={'80vh'}>
+        <Center h={'90vh'}>
             <form onSubmit={(e) => e.preventDefault()}>
-                <VStack spacing={2} p={10} bg={'gray.900'} align={'stretch'} boxShadow={'md'} rounded={'md'}
+                <VStack spacing={2} p={10} bg={cardColor} align={'stretch'} boxShadow={'dark-lg'} rounded={'md'}
                         w={'380px'}>
                     <Image src={'/logo.png'} alt={'logo'}/>
                     <Heading py={4} as={'h1'}>{t("sign_up_header")}</Heading>
@@ -103,7 +105,7 @@ export const SignupPage = () => {
                     </FormControl>
                     <HStack>
                         <Divider/>
-                        <Text color={'gray.300'}>or</Text>
+                        <Text color={orColor}>or</Text>
                         <Divider/>
                     </HStack>
                     {!isSigningUp && signUpError !== '' &&

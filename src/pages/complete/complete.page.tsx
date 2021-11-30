@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Button, Center, CircularProgress, CircularProgressLabel, HStack, Text, VStack} from "@chakra-ui/react";
+import {
+    Button,
+    Center,
+    CircularProgress,
+    CircularProgressLabel,
+    HStack,
+    Text,
+    useColorModeValue,
+    VStack
+} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentUserSession} from "../userSubtopic/selectors";
 import {useHistory} from "react-router-dom";
@@ -12,6 +21,7 @@ export const CompletePage = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const [score, setScore] = useState(0)
+    const bottomHalfColor = useColorModeValue('gray.200', 'gray.900')
 
     const handleComplete = () => {
         dispatch(completeSession())
@@ -53,7 +63,7 @@ export const CompletePage = () => {
                     <Text fontSize={'larger'}> exercises</Text>
                 </HStack>
             </Center>
-            <Center h={'50%'} alignItems={'flex-end'} marginTop={'0px !important'} bg={'gray.900'}>
+            <Center h={'50%'} alignItems={'flex-end'} marginTop={'0px !important'} bg={bottomHalfColor}>
                 <Button w={'100%'} h={'60px'} bg={'orange.300'} borderRadius={0} color={'gray.900'} fontWeight={'bold'}
                         fontSize={'lg'}
                         onClick={handleComplete}>Complete!</Button>

@@ -1,4 +1,8 @@
-import {Auth} from "aws-amplify";
+import {API, Auth} from "aws-amplify";
+import {DeleteExercisePayload} from "../builder/api";
+
+const API_NAME = 'userSettingsApi'
+const USER_SETTINGS_API_PATH = 'user-settings'
 
 export interface SignInPayload {
     username: string,
@@ -29,4 +33,16 @@ export const amplifySignUp = (payload: SignUpPayload) => {
 
 export const amplifySignOut = () => {
     return Auth.signOut();
+}
+
+export interface PutUserSettingsPayload {
+    colorScheme: string
+}
+
+export const putUserSettings = (payload: PutUserSettingsPayload) => {
+    return API.put(API_NAME, `/${USER_SETTINGS_API_PATH}`, {body: payload})
+}
+
+export const getUserSettings = () => {
+    return API.get(API_NAME, `/${USER_SETTINGS_API_PATH}/object`, null)
 }

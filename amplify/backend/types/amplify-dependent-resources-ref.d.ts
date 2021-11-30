@@ -59,6 +59,14 @@ export type AmplifyDependentResourcesAttributes = {
             "SortKeyName": "string",
             "SortKeyType": "string",
             "Region": "string"
+        },
+        "userSettings": {
+            "Name": "string",
+            "Arn": "string",
+            "StreamArn": "string",
+            "PartitionKeyName": "string",
+            "PartitionKeyType": "string",
+            "Region": "string"
         }
     },
     "function": {
@@ -100,6 +108,12 @@ export type AmplifyDependentResourcesAttributes = {
         },
         "instcommon": {
             "Arn": "string"
+        },
+        "userSettings": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
         }
     },
     "auth": {
@@ -128,6 +142,11 @@ export type AmplifyDependentResourcesAttributes = {
             "ApiId": "string"
         },
         "userSubtopicApi": {
+            "RootUrl": "string",
+            "ApiName": "string",
+            "ApiId": "string"
+        },
+        "userSettingsApi": {
             "RootUrl": "string",
             "ApiName": "string",
             "ApiId": "string"

@@ -1,5 +1,5 @@
 import React from "react";
-import {Badge, Box, Flex, Spacer, Text} from "@chakra-ui/react";
+import {Badge, Box, Flex, HStack, Spacer, Text, useColorModeValue} from "@chakra-ui/react";
 import {StarIcon} from "@chakra-ui/icons";
 import {SubtopicEntity} from "../../../models/subtopic.entity";
 import {topicActions} from "../../../pages/topics/reducer";
@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {selectUserSubtopic} from "../../../pages/userSubtopic/selectors";
 import {RootState} from "../../../reducer";
+import {numStarsForScore} from "../../../utils/stars";
 
 interface Props {
     subtopic: SubtopicEntity
@@ -18,6 +19,7 @@ export const SubtopicRow = ({subtopic}: Props) => {
     const userSubtopic = useSelector((state: RootState) => selectUserSubtopic(state, subtopic.id))
     const dispatch = useDispatch()
     const history = useHistory()
+    const borderColor = useColorModeValue('gray.400', 'gray.700')
 
     const beginSession = async (subtopicId: string) => {
         await dispatch(topicActions.setSubtopic(subtopicId))
@@ -26,15 +28,17 @@ export const SubtopicRow = ({subtopic}: Props) => {
         history.push('/session')
     }
 
-    return <Box key={subtopic.id} px={2} py={2} borderWidth={1} borderColor={'gray.700'} borderRadius={8}>
+    return <Box key={subtopic.id} px={2} py={2} borderWidth={1} borderColor={borderColor} borderRadius={8}>
         <Flex onClick={() => beginSession(subtopic.id)} alignItems={'center'}>
             <Text>{subtopic.name}</Text>
             <Spacer/>
-            {subtopic.isCompleted && [...Array(Math.floor(subtopic.score / 33))].map((_, i: number) => {
-                return <StarIcon key={i} color={'orange'}/>
-            })}
             {userSubtopic &&
-            <Text>{userSubtopic.score}%</Text>
+            <HStack spacing={1}>
+                {userSubtopic && [...Array(numStarsForScore(userSubtopic.score))].map((_, i: number) => {
+                    return <StarIcon key={i} color={'orange'}/>
+                })}
+                <Text>{userSubtopic.score}%</Text>
+            </HStack>
             }
             {!userSubtopic &&
             <Badge borderWidth={'1px'} borderRadius={'md'} fontSize={'xx-small'} size={'md'} bg={'transparent'}

@@ -7,8 +7,9 @@ import {useSelector} from "react-redux";
 import {selectIsCorrect} from "../../pages/exercise/selectors";
 import {AnswerFields} from "./answerFields";
 import {ButtonBar} from "./buttonBar";
-import {EmailIcon} from "@chakra-ui/icons";
+import {Icon} from "@chakra-ui/icons";
 import {Hints} from "./hints";
+import {MdFlag} from "react-icons/all";
 
 interface Props {
     exercise: ExerciseEntity
@@ -28,7 +29,7 @@ export const ExerciseContainer = ({exercise}: Props) => {
                     <Tag colorScheme={'red'}>incorrect</Tag>
                     }
                     <Spacer/>
-                    <EmailIcon color={'gray.400'}/>
+                    <Icon as={MdFlag} color={'gray.400'}/>
                 </Flex>
             </Box>
             <Divider mt={'0px !important'}/>

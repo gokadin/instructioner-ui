@@ -17,7 +17,7 @@ import {
     HStack,
     Image,
     Input,
-    Text,
+    Text, useColorModeValue,
     VStack
 } from "@chakra-ui/react";
 import validator from "validator";
@@ -34,6 +34,8 @@ export const LoginPage = () => {
     const [password, setPassword] = useState('')
     const [passwordTouched, setPasswordTouched] = useState(false)
     const [passwordIsValid, setPasswordIsValid] = useState(false)
+    const cardColor = useColorModeValue('white', 'gray.900')
+    const orColor = useColorModeValue('gray.700', 'gray.300')
     const {t} = useTranslation();
 
     const submit = async () => {
@@ -63,9 +65,9 @@ export const LoginPage = () => {
     }
 
     return (
-        <Center h={'80vh'}>
+        <Center h={'90vh'}>
             <form onSubmit={(e) => e.preventDefault()}>
-                <VStack spacing={2} p={10} bg={'gray.900'} align={'stretch'} boxShadow={'md'} rounded={'md'}
+                <VStack spacing={2} p={10} bg={cardColor} align={'stretch'} boxShadow={'dark-lg'} rounded={'md'}
                         w={'380px'}>
                     <Image src={'/logo.png'} alt={'logo'}/>
                     <Heading py={4} as={'h1'}>{t("login_header")}</Heading>
@@ -75,7 +77,7 @@ export const LoginPage = () => {
                     </FormControl>
                     <HStack>
                         <Divider/>
-                        <Text color={'gray.300'}>{t("or")}</Text>
+                        <Text color={orColor}>{t("or")}</Text>
                         <Divider/>
                     </HStack>
                     {!isLoggingIn && loginError !== '' &&

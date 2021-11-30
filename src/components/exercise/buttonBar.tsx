@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, HStack, IconButton} from "@chakra-ui/react";
+import {Button, HStack, IconButton, useColorModeValue} from "@chakra-ui/react";
 import {exerciseActions} from "../../pages/exercise/reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -26,6 +26,7 @@ export const ButtonBar = ({exercise}: Props) => {
     const hasHiddenHint = useSelector(selectHasHiddenHint)
     const dispatch = useDispatch()
     const history = useHistory()
+    const bgColor = useColorModeValue('gray.200', 'gray.900')
 
     const handleCheckExercise = () => {
         dispatch(exerciseActions.markCompleted(exercise.id))
@@ -47,7 +48,8 @@ export const ButtonBar = ({exercise}: Props) => {
     }
 
     return (
-        <HStack w={'full'} alignItems={'center'} h={'16'} align={'stretch'} px={4} py={2} bg={'gray.900'} mt={'0px !important'} borderBottomRadius={'md'} spacing={3}>
+        <HStack w={'full'} alignItems={'center'} h={'16'} align={'stretch'} px={4} py={2} bg={bgColor}
+                mt={'0px !important'} borderBottomRadius={'md'} spacing={3}>
             <IconButton aria-label={'Show answer'} size={'lg'} variant={'outline'} colorScheme={'red'}
                         icon={<ViewIcon/>}
                         onClick={handleShowAnswer}/>

@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {TopicEntity} from "../../models/topic.entity";
-import {Badge, Box, Flex, HStack, Progress, Skeleton, Spacer, Text, VStack} from "@chakra-ui/react";
+import {Badge, Box, Flex, HStack, Progress, Skeleton, Spacer, Text, useColorModeValue, VStack} from "@chakra-ui/react";
 import {ChevronDownIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {SubtopicList} from "./subtopics/subtopics";
 import {useDispatch, useSelector} from "react-redux";
@@ -25,6 +25,9 @@ export const TopicCard = ({topic}: Props) => {
     const topicScore = useSelector((state: RootState) => selectTopicScore(state, topic.id))
     const isUserSubtopicsLoading = useSelector(selectIsUserSubtopicsLoading)
     const loadedUserSubtopicIds = useSelector(selectLoadedUserSubtopicIds)
+    const topicCardColor = useColorModeValue('whitesmoke', 'gray.900')
+    const orangeTextColor = useColorModeValue('orange.500', 'orange.300')
+    const topicCountColor = useColorModeValue('gray.600', 'gray.400')
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -44,14 +47,15 @@ export const TopicCard = ({topic}: Props) => {
         }
     }, [dispatch, subtopics, isUserSubtopicsLoading, loadedUserSubtopicIds])
 
-    return <VStack key={topic.id} align={'stretch'} borderWidth={1} borderRadius={'md'} bg={'gray.900'} pb={2}>
+    return <VStack key={topic.id} align={'stretch'} borderWidth={1} borderRadius={'md'} bg={topicCardColor}
+                   boxShadow={'lg'} pb={2}>
         <Progress borderTopRadius={'md'} size={'xs'} colorScheme={'green'}
                   max={topic.isSubtopicsLoaded ? subtopics.length : 1}
                   value={completedSubtopicCount}/>
         <Box px={2} onClick={() => dispatch(topicActions.toggleTopicCollapse(topic.id))}>
             <Flex>
                 <HStack>
-                    <Text fontSize={'xl'} color={'orange'}>{topic.name}</Text>
+                    <Text fontSize={'2xl'} color={orangeTextColor}>{topic.name}</Text>
                 </HStack>
                 <Spacer/>
                 {topic.isOpen ? <ChevronDownIcon/> : <ChevronRightIcon/>}
@@ -61,13 +65,13 @@ export const TopicCard = ({topic}: Props) => {
         <Flex px={2}>
             {topic.isSubtopicsLoaded
                 ?
-                <Text mt={'0px !important'} color={'gray.400'}>{completedSubtopicCount}/{subtopics.length} topics</Text>
+                <Text mt={'0px !important'} color={topicCountColor}>{completedSubtopicCount}/{subtopics.length} topics</Text>
                 : <Skeleton h={'24px'}/>
             }
             <Spacer/>
             {completedSubtopicCount > 0 &&
             <Badge borderWidth={'1px'} borderRadius={'md'} fontSize={'small'} size={'md'} bg={'transparent'}
-                   color={'orange.300'}>{topicScore}%</Badge>
+                   color={orangeTextColor}>{topicScore}%</Badge>
             }
         </Flex>
         }

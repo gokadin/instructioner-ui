@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "paths": {
+    "/user-settings": {
+      "name": "/user-settings",
+      "lambdaFunction": "userSettings",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}
