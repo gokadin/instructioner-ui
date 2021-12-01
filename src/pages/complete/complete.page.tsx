@@ -9,22 +9,19 @@ import {
     useColorModeValue,
     VStack
 } from "@chakra-ui/react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentUserSession} from "../userSubtopic/selectors";
 import {useHistory} from "react-router-dom";
 import {StarIcon} from "@chakra-ui/icons";
-import {completeSession} from "../userSubtopic/reducer";
 import {numStarsForScore} from "../../utils/stars";
 
 export const CompletePage = () => {
     const session = useSelector(selectCurrentUserSession)
     const history = useHistory()
-    const dispatch = useDispatch()
     const [score, setScore] = useState(0)
     const bottomHalfColor = useColorModeValue('gray.200', 'gray.900')
 
     const handleComplete = () => {
-        dispatch(completeSession())
         history.push('/topics')
     }
 

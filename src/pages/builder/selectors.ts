@@ -1,5 +1,6 @@
 import {createSelector} from "reselect";
 import {RootState} from "../../reducer";
+import {parsePreviewContent} from "../../utils/builder.utils";
 
 export const selectVariables = createSelector(
     (state: RootState) => state.builder,
@@ -35,12 +36,57 @@ export const selectName = createSelector(
     (state) => state.name
 )
 
+export const selectDifficulty = createSelector(
+    (state: RootState) => state.builder,
+    (state) => state.difficulty
+)
+
 export const selectQuestion = createSelector(
     (state: RootState) => state.builder,
     (state) => state.question
 )
 
-export const selectDifficulty = createSelector(
+export const selectIsInPreview = createSelector(
     (state: RootState) => state.builder,
-    (state) => state.difficulty
+    (state) => state.isInPreview
+)
+
+const selectResolvedVariables = createSelector(
+    (state: RootState) => state.builder,
+    (state) => {
+        let resolved: any = {}
+        state.variableIds.forEach((variableId: string) => {
+            resolved[variableId] = state.variables[variableId].default
+        })
+        return resolved
+    }
+)
+
+export const selectQuestionPreview = createSelector(
+    selectResolvedVariables,
+    (state: RootState) => state.builder,
+    (variables, state) => parsePreviewContent(state.question, variables)
+)
+
+export const selectHintsPreview = createSelector(
+    selectResolvedVariables,
+    (state: RootState) => state.builder,
+    (variables, state) => state.hints.map(hint => {
+        return {
+            ...hint,
+            isVisible: true,
+            content: parsePreviewContent(hint.content, variables)
+        }
+    })
+)
+
+export const selectAnswerFieldsPreview = createSelector(
+    selectResolvedVariables,
+    (state: RootState) => state.builder,
+    (variables, state) => state.answerFields.map(answerField => {
+        return {
+            ...answerField,
+            content: parsePreviewContent(answerField.content, variables)
+        }
+    })
 )

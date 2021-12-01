@@ -45,6 +45,7 @@ const slice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder.addCase(getCurrentUser.pending, (state) => {
+            state.user = {email: ''}
             state.isUserLoading = true
             state.isUserLoaded = false
         })

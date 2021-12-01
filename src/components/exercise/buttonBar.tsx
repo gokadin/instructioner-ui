@@ -12,7 +12,7 @@ import {
 import {ExerciseEntity} from "../../models/exercise.entity";
 import {QuestionIcon, ViewIcon} from "@chakra-ui/icons";
 import {useHistory} from "react-router-dom";
-import {userSubtopicActions} from "../../pages/userSubtopic/reducer";
+import {completeSession, userSubtopicActions} from "../../pages/userSubtopic/reducer";
 
 interface Props {
     exercise: ExerciseEntity
@@ -41,6 +41,7 @@ export const ButtonBar = ({exercise}: Props) => {
 
     const handleNextExercise = () => {
         if (isLastExercise) {
+            dispatch(completeSession())
             history.push('/session/complete')
         } else {
             dispatch(exerciseActions.next())

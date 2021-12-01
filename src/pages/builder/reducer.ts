@@ -30,6 +30,9 @@ const slice = createSlice({
     name: 'builder',
     initialState: initialState,
     reducers: {
+        togglePreview: (state) => {
+            state.isInPreview = !state.isInPreview
+        },
         parseVariables: (state) => {
             let content = state.question
             state.hints.forEach(hint => content += hint.content)

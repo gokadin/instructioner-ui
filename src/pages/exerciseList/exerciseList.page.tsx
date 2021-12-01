@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import {Box, Button, HStack, Text, VStack} from "@chakra-ui/react";
-import {AddIcon} from "@chakra-ui/icons";
+import {Box, Button, ButtonGroup, HStack, Text, VStack} from "@chakra-ui/react";
+import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {selectSelectedSubtopicId} from "../admin/selectors";
 import {ExerciseList} from "../../components/exerciseList/exerciseList";
@@ -24,6 +24,10 @@ export const ExerciseListPage = () => {
         }
     }, [dispatch, subtopicId])
 
+    const handleChangeTopic = () => {
+        history.push('/admin')
+    }
+
     return (
         <VStack align={'stretch'} px={4}>
             <Box py={2}>
@@ -36,6 +40,13 @@ export const ExerciseListPage = () => {
             {exercises &&
             <ExerciseList exercises={exercises}/>
             }
+            <ButtonGroup>
+                <Button
+                    variantColor="teal"
+                    variant="outline"
+                    leftIcon={<ArrowBackIcon/>}
+                    onClick={handleChangeTopic}>Change topic</Button>
+            </ButtonGroup>
         </VStack>
     )
 }

@@ -1,5 +1,15 @@
 import React from "react";
-import {Button, ButtonGroup, FormControl, FormLabel, HStack} from "@chakra-ui/react";
+import {
+    Badge,
+    Box,
+    FormControl,
+    FormLabel,
+    HStack,
+    Slider,
+    SliderFilledTrack,
+    SliderThumb,
+    SliderTrack
+} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectDifficulty} from "../../pages/builder/selectors";
 import {builderActions} from "../../pages/builder/reducer";
@@ -14,17 +24,18 @@ export const DifficultySelector = () => {
 
     return (
         <FormControl>
-            <FormLabel>Difficulty</FormLabel>
-            <ButtonGroup size={'sm'} colorScheme={'teal'}>
-                <HStack>
-                    <Button variant={(!difficulty || difficulty === 0) ? 'solid' : 'outline'}
-                            onClick={() => handleDifficulty(0)}>easy</Button>
-                    <Button variant={difficulty === 1 ? 'solid' : 'outline'}
-                            onClick={() => handleDifficulty(1)}>medium</Button>
-                    <Button variant={difficulty === 2 ? 'solid' : 'outline'}
-                            onClick={() => handleDifficulty(2)}>hard</Button>
-                </HStack>
-            </ButtonGroup>
+            <HStack spacing={4} alignItems={'center'}>
+                <FormLabel>Difficulty</FormLabel>
+                <Badge>easy</Badge>
+                <Slider min={0} max={4} step={1} value={difficulty} onChange={(e) => handleDifficulty(e)} maxW={200}>
+                    <SliderTrack>
+                        <Box position={'relative'} right={10}/>
+                        <SliderFilledTrack bg={'orange'}/>
+                    </SliderTrack>
+                    <SliderThumb boxSize={4}/>
+                </Slider>
+                <Badge>hard</Badge>
+            </HStack>
         </FormControl>
     )
 }

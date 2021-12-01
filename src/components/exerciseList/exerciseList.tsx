@@ -1,5 +1,5 @@
 import React from "react";
-import {Flex, Spacer, Text, VStack} from "@chakra-ui/react";
+import {Badge, Table, Tbody, Td, Tfoot, Th, Thead, Tr} from "@chakra-ui/react";
 import {ExerciseEntity} from "../../models/exercise.entity";
 import {DeleteIcon} from "@chakra-ui/icons";
 import {useDispatch} from "react-redux";
@@ -13,14 +13,32 @@ export const ExerciseList = ({exercises}: Props) => {
     const dispatch = useDispatch()
 
     return (
-        <VStack align={'stretch'}>
-            {exercises.map((exercise, i) => {
-                return <Flex key={i}>
-                    <Text>{i}-{exercise.name}</Text>
-                    <Spacer/>
-                    <DeleteIcon onClick={() => dispatch(removeExercise(exercise))}/>
-                </Flex>
-            })}
-        </VStack>
+        <Table variant='simple'>
+            <Thead>
+                <Tr>
+                    <Th>Name</Th>
+                    <Th>Difficulty</Th>
+                    <Th>Actions</Th>
+                </Tr>
+            </Thead>
+            <Tbody>
+                {exercises.map((exercise, i) => {
+                    return <Tr>
+                        <Td>{exercise.name}</Td>
+                        <Td>
+                            <Badge>{exercise.difficulty}</Badge>
+                        </Td>
+                        <Td>
+                            <DeleteIcon onClick={() => dispatch(removeExercise(exercise))}/>
+                        </Td>
+                    </Tr>
+                })}
+            </Tbody>
+            <Tfoot>
+                <Tr>
+                    <Th>Count: {exercises.length}</Th>
+                </Tr>
+            </Tfoot>
+        </Table>
     )
 }

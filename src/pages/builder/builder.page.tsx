@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
-import {Button, Flex, FormControl, Spacer, VStack} from "@chakra-ui/react";
+import {Button, ButtonGroup, Flex, FormControl, Spacer, VStack} from "@chakra-ui/react";
 import {Toolbar} from "../../components/builder/toolbar";
-import {Question} from "../../components/builder/question";
+import {QuestionField} from "../../components/builder/question";
 import {Answers} from "../../components/builder/answers";
-import {Hints} from "../../components/builder/hints";
+import {HintsField} from "../../components/builder/hints";
 import {useDispatch} from "react-redux";
 import {builderActions, createExercise} from "./reducer";
 import {Name} from "../../components/builder/name";
@@ -39,8 +39,8 @@ export const BuilderPage = () => {
             <VStack w={'100%'} pt={2} px={'10%'}>
                 <Name/>
                 <DifficultySelector/>
-                <Question/>
-                <Hints/>
+                <QuestionField/>
+                <HintsField/>
                 <Answers/>
                 <FormControl>
                     <Flex pt={4}>
@@ -50,7 +50,9 @@ export const BuilderPage = () => {
                             leftIcon={<ArrowBackIcon/>}
                             onClick={handleCancel}>Cancel</Button>
                         <Spacer/>
-                        <Button onClick={handleCreate} colorScheme={'blue'}>Create</Button>
+                        <ButtonGroup>
+                            <Button onClick={handleCreate} colorScheme={'blue'}>Create</Button>
+                        </ButtonGroup>
                     </Flex>
                 </FormControl>
             </VStack>

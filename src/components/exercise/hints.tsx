@@ -1,11 +1,13 @@
 import React from "react";
 import {VStack} from "@chakra-ui/react";
-import {useSelector} from "react-redux";
-import {selectHints} from "../../pages/exercise/selectors";
 import {Hint} from "./hint";
+import {HintEntity} from "../../models/hint.entity";
 
-export const Hints = () => {
-    const hints = useSelector(selectHints)
+interface Props {
+    hints: HintEntity[]
+}
+
+export const Hints = ({hints}: Props) => {
 
     return (
         <VStack align={'stretch'}>

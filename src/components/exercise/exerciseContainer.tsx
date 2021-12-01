@@ -1,15 +1,15 @@
 import React from "react";
 import {Box, Divider, Flex, Spacer, Tag, VStack} from "@chakra-ui/react";
 import 'katex/dist/katex.min.css'
-import Latex from 'react-latex-next'
 import {ExerciseEntity} from "../../models/exercise.entity";
 import {useSelector} from "react-redux";
-import {selectIsCorrect} from "../../pages/exercise/selectors";
+import {selectHints, selectIsCorrect} from "../../pages/exercise/selectors";
 import {AnswerFields} from "./answerFields";
 import {ButtonBar} from "./buttonBar";
 import {Icon} from "@chakra-ui/icons";
 import {Hints} from "./hints";
 import {MdFlag} from "react-icons/all";
+import {Question} from "./question";
 
 interface Props {
     exercise: ExerciseEntity
@@ -17,6 +17,7 @@ interface Props {
 
 export const ExerciseContainer = ({exercise}: Props) => {
     const isCorrect = useSelector(selectIsCorrect)
+    const hints = useSelector(selectHints)
 
     return (
         <VStack h={'full'} align={'stretch'}>
@@ -34,10 +35,8 @@ export const ExerciseContainer = ({exercise}: Props) => {
             </Box>
             <Divider mt={'0px !important'}/>
             <Box height={'full'} maxH={'full'} overflowY={'auto'}>
-                <Box p={4}>
-                    <Latex>{exercise.question}</Latex>
-                </Box>
-                <Hints/>
+                <Question content={exercise.question}/>
+                <Hints hints={hints}/>
             </Box>
             <VStack w={'full'} justifyContent={'flex-end'}>
                 <Divider mt={'0px !important'}/>

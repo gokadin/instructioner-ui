@@ -1,9 +1,11 @@
 import React from "react";
 import {Button, HStack, Input, Radio} from "@chakra-ui/react";
-import {DeleteIcon} from "@chakra-ui/icons";
 import {AnswerFieldEntity} from "../../models/answerField.entity";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {builderActions} from "../../pages/builder/reducer";
+import {selectIsInPreview} from "../../pages/builder/selectors";
+import Latex from "react-latex-next";
+import {DeleteIcon} from "@chakra-ui/icons";
 
 interface Props {
     answerField: AnswerFieldEntity
@@ -11,6 +13,7 @@ interface Props {
 }
 
 export const MultipleChoiceAnswerField = ({answerField, index}: Props) => {
+    const isInPreview = useSelector(selectIsInPreview)
     const dispatch = useDispatch()
 
     const handleChange = (content: string) => {
@@ -21,11 +24,18 @@ export const MultipleChoiceAnswerField = ({answerField, index}: Props) => {
     return (
         <HStack spacing={4}>
             <Radio value={index}/>
-            <Input placeholder={'Answer'} value={answerField.content}
-                   onChange={(e) => handleChange(e.target.value)}/>
-            <Button onClick={() => dispatch(builderActions.removeAnswerField(index))}>
-                <DeleteIcon/>
-            </Button>
+            {isInPreview &&
+            <Latex>{answerField.content}</Latex>
+            }
+            {!isInPreview &&
+            <>
+                <Input placeholder={'Answer'} value={answerField.content}
+                       onChange={(e) => handleChange(e.target.value)}/>
+                <Button onClick={() => dispatch(builderActions.removeAnswerField(index))}>
+                    <DeleteIcon/>
+                </Button>
+            </>
+            }
         </HStack>
     )
 }

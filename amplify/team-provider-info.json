@@ -84,7 +84,7 @@
         },
         "Exercise": {
           "deploymentBucketName": "amplify-inst-migration-164218-deployment",
-          "s3Key": "amplify-builds/Exercise-30795449493861443731-build.zip"
+          "s3Key": "amplify-builds/Exercise-4e426d4b6a7354643071-build.zip"
         },
         "UserSubtopic": {
           "deploymentBucketName": "amplify-inst-migration-164218-deployment",

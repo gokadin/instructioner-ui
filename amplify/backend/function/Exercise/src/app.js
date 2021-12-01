@@ -23,7 +23,7 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
     tableName = tableName + '-' + process.env.ENV;
 }
 
-const userIdPresent = false; // TODO: update in case is required to use that definition
+const userIdPresent = false;
 const partitionKeyName = "subtopicId";
 const partitionKeyType = "S";
 const sortKeyName = "id";
@@ -59,7 +59,10 @@ const VARIABLE_SYMBOL = '@var'
 const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
 
 const SOLVE_SYMBOL = '@solve'
-const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z]+)\\)`
+const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z()]+)\\)`
+
+const SIMPLFRAC_SYMBOL = '@simplfrac'
+const SIMPLFRAC_REGEX = `${SIMPLFRAC_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z{}\\\\]+)\\)`
 
 const processExercises = (exercises) => {
     const parsed = exercises.map(processExercise)
@@ -93,7 +96,9 @@ const processExercise = (exercise) => {
 const resolveVariables = (variables) => {
     let resolved = {}
     variables.forEach(variable => {
-        resolved[variable.name] = variable.default.toString()
+        const min = Math.ceil(variable.rangeStart)
+        const max = Math.floor(variable.rangeEnd)
+        resolved[variable.name] = Math.floor(Math.random() * (max - min + 1) + min)
     })
     return resolved
 }
@@ -109,7 +114,20 @@ const parseContent = (content, variables) => {
         return evaluate(contents)
     })
 
+    // const simplFracRegex = new RegExp(SIMPLFRAC_REGEX, 'gm')
+    // result = result.replace(simplFracRegex, (match, contents) => {
+    //     return reduce(contents, {}, {exactFractions: true})
+    // })
+
     return result
+}
+
+const reduce = (numerator, denominator) => {
+    let gcd = function gcd(a,b){
+        return b ? gcd(b, a%b) : a;
+    };
+    gcd = gcd(numerator,denominator);
+    return [numerator/gcd, denominator/gcd];
 }
 
 const shuffleArray = (a) => {

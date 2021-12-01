@@ -3,6 +3,7 @@ import {AnswerFieldEntity} from "../../models/answerField.entity";
 import {HintEntity} from "../../models/hint.entity";
 
 export interface BuilderState {
+    isInPreview: boolean
     name: string
     question: string
     difficulty: number
@@ -13,6 +14,7 @@ export interface BuilderState {
 }
 
 export const initialState: BuilderState = {
+    isInPreview: false,
     question: '',
     name: '',
     difficulty: 0,

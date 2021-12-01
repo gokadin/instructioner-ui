@@ -6,19 +6,20 @@ import {AdminPage} from "../pages/admin/admin.page";
 import {ExerciseListPage} from "../pages/exerciseList/exerciseList.page";
 import {BuilderPage} from "../pages/builder/builder.page";
 import {useSelector} from "react-redux";
-import {selectIsLoaded, selectIsLoggedIn} from "../pages/account/selectors";
+import {selectIsLoaded, selectIsLoggedIn, selectUser} from "../pages/account/selectors";
 import {LoadingUser} from "../utils/LoadingUser";
 
 export const AdminModule = () => {
     const isUserLoaded = useSelector(selectIsLoaded);
     const isUserLoggedIn = useSelector(selectIsLoggedIn);
+    const user = useSelector(selectUser);
     const history = useHistory()
 
     useEffect(() => {
-        if (isUserLoaded && !isUserLoggedIn) {
+        if (isUserLoaded && (!isUserLoggedIn || user.email !== 'admin@instructioner.com')) {
             history.push('/account/login')
         }
-    }, [isUserLoggedIn, isUserLoaded, history])
+    }, [isUserLoggedIn, isUserLoaded, history, user])
 
     if (!isUserLoaded) {
         return <LoadingUser/>
