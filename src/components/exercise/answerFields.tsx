@@ -1,6 +1,6 @@
 import React from "react";
 import {ExerciseEntity} from "../../models/exercise.entity";
-import {HStack, Radio, RadioGroup, useColorModeValue, VStack} from "@chakra-ui/react";
+import {HStack, Radio, RadioGroup, Text, useColorModeValue, VStack} from "@chakra-ui/react";
 import {exerciseActions} from "../../pages/exercise/reducer";
 import Latex from "react-latex-next";
 import {useDispatch, useSelector} from "react-redux";
@@ -29,7 +29,8 @@ export const AnswerFields = ({exercise}: Props) => {
         }))} value={selectedAnswerFieldIndex}>
             <VStack align={'left'}>
                 {exercise.answerFields.map((answerField, i) => {
-                    return <HStack px={2} py={2} borderWidth={1} borderRadius={8} borderColor={borderColor} key={i} align={'stretch'} alignItems={'center'}>
+                    return <HStack px={2} py={2} borderWidth={1} borderRadius={8} borderColor={borderColor} key={i}
+                                   align={'stretch'} alignItems={'center'}>
                         {exerciseIsCompleted && correctAnswerFieldIndex === i &&
                         <CheckIcon color={'green'}/>
                         }
@@ -37,7 +38,9 @@ export const AnswerFields = ({exercise}: Props) => {
                         <SmallCloseIcon color={'red'}/>
                         }
                         <Radio isFullWidth={true} key={i} value={i} w={'100%'}>
-                            <Latex>{answerField.content}</Latex>
+                            <Text fontSize={'lg'}>
+                                <Latex>{answerField.content}</Latex>
+                            </Text>
                         </Radio>
                     </HStack>
                 })}

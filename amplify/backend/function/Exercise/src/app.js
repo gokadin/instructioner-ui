@@ -61,9 +61,6 @@ const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
 const SOLVE_SYMBOL = '@solve'
 const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z()]+)\\)`
 
-const SIMPLFRAC_SYMBOL = '@simplfrac'
-const SIMPLFRAC_REGEX = `${SIMPLFRAC_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z{}\\\\]+)\\)`
-
 const processExercises = (exercises) => {
     const parsed = exercises.map(processExercise)
 
@@ -114,20 +111,38 @@ const parseContent = (content, variables) => {
         return evaluate(contents)
     })
 
-    // const simplFracRegex = new RegExp(SIMPLFRAC_REGEX, 'gm')
-    // result = result.replace(simplFracRegex, (match, contents) => {
-    //     return reduce(contents, {}, {exactFractions: true})
-    // })
-
-    return result
+    return applyMathPostProcesses(result)
 }
 
-const reduce = (numerator, denominator) => {
-    let gcd = function gcd(a,b){
-        return b ? gcd(b, a%b) : a;
-    };
-    gcd = gcd(numerator,denominator);
-    return [numerator/gcd, denominator/gcd];
+const MATH_EXPRESSION_REGEX = '(\\$)([^$]+)(\\$)'
+const applyMathPostProcesses = (content) => {
+    const regex = new RegExp(MATH_EXPRESSION_REGEX, 'gm')
+    return content.replace(regex, (match, openingSymbol, mathContent, closingSymbol) => {
+        mathContent = removeUnitExp(mathContent)
+        mathContent = simplifyFractions(mathContent)
+        return `${openingSymbol}${mathContent}${closingSymbol}`
+    })
+}
+
+const UNIT_EXP_REGEX = '\\^1|\\^{[1]}'
+const removeUnitExp = (content) => {
+    const regex = new RegExp(UNIT_EXP_REGEX, 'gm')
+    return content.replace(regex, '')
+}
+
+const SIMPL_FRAC_REGEX = '\\\\frac{(\\d+)}{(\\d+)}'
+const simplifyFractions = (content) => {
+    const regex = new RegExp(SIMPL_FRAC_REGEX, 'gm')
+    return content.replace(regex, (match, numerator, denominator) => {
+        const gcd = greaterCommonDenominator(numerator, denominator)
+        numerator /= gcd
+        denominator /= gcd
+        return denominator > 1 ? `\\frac{${numerator}}{${denominator}}` : numerator
+    })
+}
+
+const greaterCommonDenominator = (a, b) => {
+    return b ? greaterCommonDenominator(b, a % b) : a
 }
 
 const shuffleArray = (a) => {

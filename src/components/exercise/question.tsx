@@ -1,5 +1,5 @@
 import React from "react";
-import {Box} from "@chakra-ui/react";
+import {Box, Text} from "@chakra-ui/react";
 import Latex from "react-latex-next";
 
 interface Props {
@@ -10,7 +10,9 @@ export const Question = ({content}: Props) => {
 
     return (
         <Box p={4}>
-            <Latex>{content}</Latex>
+            <Text fontSize={'lg'}>
+                <Latex>{content}</Latex>
+            </Text>
         </Box>
     )
 }
