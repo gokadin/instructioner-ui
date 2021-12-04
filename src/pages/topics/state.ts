@@ -1,10 +1,11 @@
 import {TopicEntity} from "../../models/topic.entity";
 import {SubtopicEntity} from "../../models/subtopic.entity";
+import {LoadState} from "../../utils/loadState";
 
 export interface TopicState {
     topicIds: string[]
     topics: Record<string, TopicEntity>
-    isTopicsLoaded: boolean
+    topicsLoadState: LoadState
     subtopicIds: string[]
     subtopics: Record<string, SubtopicEntity>
     selectedSubtopicId: string
@@ -13,7 +14,7 @@ export interface TopicState {
 export const initialState: TopicState = {
     topicIds: [],
     topics: {},
-    isTopicsLoaded: false,
+    topicsLoadState: new LoadState(),
     subtopicIds: [],
     subtopics: {},
     selectedSubtopicId: '',

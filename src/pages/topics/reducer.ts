@@ -3,6 +3,7 @@ import {initialState} from "./state";
 import {normalize} from "normalizr";
 import {subtopicSchemaList, topicSchemaList} from "../../models/schemas";
 import {getSubtopics, getTopics} from "./api";
+import {LoadState} from "../../utils/loadState";
 
 export const fetchTopics = createAsyncThunk('topic/fetchTopics', async (courseId: string) => {
     const data = await getTopics(courseId)
@@ -32,15 +33,15 @@ const slice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(fetchTopics.pending, (state) => {
-            state.isTopicsLoaded = false
+            state.topicsLoadState = LoadState.getLoadState()
         })
         builder.addCase(fetchTopics.rejected, (state) => {
-            state.isTopicsLoaded = true
+            state.topicsLoadState = LoadState.getRejectStae()
         })
         builder.addCase(fetchTopics.fulfilled, (state, action: any) => {
             state.topicIds = Object.keys(action.payload.topic)
             state.topics = action.payload.topic
-            state.isTopicsLoaded = true
+            state.topicsLoadState = LoadState.getSucceedState()
         })
         builder.addCase(fetchSubtopics.pending, (state, action: any) => {
             state.topics[action.meta.arg].isSubtopicsLoaded = false

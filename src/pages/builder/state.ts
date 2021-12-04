@@ -6,6 +6,7 @@ export interface BuilderState {
     isInPreview: boolean
     name: string
     question: string
+    questionFormatted: string
     difficulty: number
     variableIds: string[],
     variables: Record<string, VariableEntity>
@@ -16,6 +17,7 @@ export interface BuilderState {
 export const initialState: BuilderState = {
     isInPreview: false,
     question: '',
+    questionFormatted: '',
     name: '',
     difficulty: 0,
     variableIds: [],

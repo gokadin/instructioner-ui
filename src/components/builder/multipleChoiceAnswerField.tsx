@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, HStack, Input, Radio} from "@chakra-ui/react";
+import {Button, HStack, Input, Radio, Text} from "@chakra-ui/react";
 import {AnswerFieldEntity} from "../../models/answerField.entity";
 import {useDispatch, useSelector} from "react-redux";
 import {builderActions} from "../../pages/builder/reducer";
@@ -25,7 +25,9 @@ export const MultipleChoiceAnswerField = ({answerField, index}: Props) => {
         <HStack spacing={4}>
             <Radio value={index}/>
             {isInPreview &&
-            <Latex>{answerField.content}</Latex>
+            <Text fontSize={'lg'}>
+                <Latex>{answerField.content}</Latex>
+            </Text>
             }
             {!isInPreview &&
             <>

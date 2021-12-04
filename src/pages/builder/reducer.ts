@@ -4,6 +4,7 @@ import {VariableEntity} from "../../models/variable.entity";
 import {deleteExercise, postExercise} from "./api";
 import {RootState} from "../../reducer";
 import {ExerciseEntity} from "../../models/exercise.entity";
+import {re} from "mathjs";
 
 const VARIABLE_SYMBOL = '@var'
 const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
@@ -62,6 +63,11 @@ const slice = createSlice({
         },
         setQuestionContent: (state, action: PayloadAction<string>) => {
             state.question = action.payload
+            const regex = new RegExp(VARIABLE_REGEX, 'gm')
+            let formatted = action.payload.replace(regex, (match) => {
+                return `<mark class='highlight'>${match}</mark>`
+            })
+            state.questionFormatted = formatted.replaceAll('\n', '<br>')
         },
         setHintContent: (state, action: PayloadAction<{ index: number, content: string }>) => {
             state.hints[action.payload.index].content = action.payload.content

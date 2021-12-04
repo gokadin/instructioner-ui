@@ -46,6 +46,11 @@ export const selectQuestion = createSelector(
     (state) => state.question
 )
 
+export const selectQuestionFormatted = createSelector(
+    (state: RootState) => state.builder,
+    (state) => state.questionFormatted
+)
+
 export const selectIsInPreview = createSelector(
     (state: RootState) => state.builder,
     (state) => state.isInPreview

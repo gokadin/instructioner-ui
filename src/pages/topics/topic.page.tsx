@@ -1,31 +1,23 @@
 import React, {useEffect} from "react";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    Skeleton,
-    Stack,
-    Text,
-    useColorModeValue,
-    VStack
-} from "@chakra-ui/react";
+import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, Text, useColorModeValue, VStack} from "@chakra-ui/react";
 import {ChevronRightIcon} from "@chakra-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTopics} from "./reducer";
 import {TopicList} from "../../components/topics/topicList";
-import {selectIsTopicsLoaded, selectTopics} from "./selectors";
+import {selectTopics, selectTopicsLoadState} from "./selectors";
 
 export const TopicPage = () => {
     const topics = useSelector(selectTopics)
-    const isTopicsLoaded = useSelector(selectIsTopicsLoaded)
+    const topicsLoadState = useSelector(selectTopicsLoadState)
     const breadcrumbTextColor = useColorModeValue('gray.700', 'gray.300')
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!isTopicsLoaded) {
+        if (topicsLoadState.shouldLoad()) {
+            console.log('loading topics')
             dispatch(fetchTopics('8bc82537-dab4-4f76-ab32-12764e586b6a'))
         }
-    }, [dispatch, isTopicsLoaded])
+    }, [dispatch, topicsLoadState])
 
     return (
         <VStack align={'stretch'}>
@@ -41,14 +33,7 @@ export const TopicPage = () => {
                     </BreadcrumbLink>
                 </BreadcrumbItem>
             </Breadcrumb>
-            {!isTopicsLoaded
-                ? <Stack p={4}>
-                    <Skeleton h={'60px'}/>
-                    <Skeleton h={'60px'}/>
-                    <Skeleton h={'60px'}/>
-                </Stack>
-                : <TopicList topics={topics}/>
-            }
+            <TopicList topics={topics} loadState={topicsLoadState}/>
         </VStack>
     )
 }
