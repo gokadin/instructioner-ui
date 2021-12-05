@@ -12,7 +12,8 @@ import {
     HStack,
     Image,
     Input,
-    Text, useColorModeValue,
+    Text,
+    useColorModeValue,
     useToast,
     VStack
 } from "@chakra-ui/react";
@@ -21,14 +22,12 @@ import {useHistory} from "react-router-dom";
 import validator from "validator";
 import {getCurrentUser, signUp} from "../account/reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {selectIsSigningUp, selectIsSignUpSuccess, selectSignUpError} from "../account/selectors";
-import { useTranslation } from 'react-i18next';
+import {selectUserSignUpState} from "../account/selectors";
+import {useTranslation} from 'react-i18next';
 
 export const SignupPage = () => {
     const history = useHistory()
-    const isSigningUp = useSelector(selectIsSigningUp)
-    const isSigningSuccess = useSelector(selectIsSignUpSuccess)
-    const signUpError = useSelector(selectSignUpError)
+    const userSignUpState = useSelector(selectUserSignUpState)
     const dispatch = useDispatch()
     const toast = useToast()
     const [email, setEmail] = useState('')
@@ -45,7 +44,7 @@ export const SignupPage = () => {
     const {t} = useTranslation();
 
     useEffect(() => {
-        if (isSigningSuccess) {
+        if (userSignUpState.isReady()) {
             toast({
                 title: t("account_created_success"),
                 description: t("account_created_success_description"),
@@ -54,7 +53,7 @@ export const SignupPage = () => {
                 isClosable: true,
             })
         }
-    }, [isSigningSuccess, toast, t])
+    }, [userSignUpState, toast, t])
 
     const submit = async () => {
         if (!emailIsValid || !passwordIsValid || !confirmPasswordIsValid) {
@@ -108,10 +107,10 @@ export const SignupPage = () => {
                         <Text color={orColor}>or</Text>
                         <Divider/>
                     </HStack>
-                    {!isSigningUp && signUpError !== '' &&
+                    {userSignUpState.hasFailed() &&
                     <Alert status="error">
                         <AlertIcon/>
-                        {signUpError}
+                        {userSignUpState.getFailureMessage()}
                     </Alert>
                     }
                     <FormControl isInvalid={emailTouched && !emailIsValid}>
@@ -136,7 +135,8 @@ export const SignupPage = () => {
                         <FormErrorMessage>{t("password_confirm_validation")}</FormErrorMessage>
                     </FormControl>
                     <FormControl paddingTop={2}>
-                        <Button type={'submit'} w={'100%'} size={'md'} colorScheme={'orange'} isLoading={isSigningUp}
+                        <Button type={'submit'} w={'100%'} size={'md'} colorScheme={'orange'}
+                                isLoading={userSignUpState.isLoading()}
                                 loadingText={'Signing up'} onClick={submit}>{t("sign_up_btn")}</Button>
                     </FormControl>
                     <FormControl>

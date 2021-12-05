@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {initialState} from "./state";
 import {amplifyCurrentUser, amplifySignIn, amplifySignOut, amplifySignUp, SignInPayload, SignUpPayload} from "./api";
+import {LoadState} from "../../utils/loadState";
 
 export const getCurrentUser = createAsyncThunk('account/getCurrentUser', async (_, thunkAPI) => {
     try {
@@ -46,18 +47,15 @@ const slice = createSlice({
     extraReducers: builder => {
         builder.addCase(getCurrentUser.pending, (state) => {
             state.user = {email: ''}
-            state.isUserLoading = true
-            state.isUserLoaded = false
+            state.userLoadState = LoadState.getLoadState()
         })
         builder.addCase(getCurrentUser.rejected, (state) => {
-            state.isUserLoading = false
-            state.isUserLoaded = true
             console.log('user is not authenticated')
+            state.userLoadState = LoadState.getRejectStae()
         })
         builder.addCase(getCurrentUser.fulfilled, (state, action: any) => {
             console.log('got signed in user', action)
-            state.isUserLoading = false
-            state.isUserLoaded = true
+            state.userLoadState = LoadState.getSucceedState()
             if (action.payload.attributes) {
                 state.user = {
                     email: action.payload.attributes.email
@@ -68,41 +66,34 @@ const slice = createSlice({
                 }
             }
         })
-        builder.addCase(signIn.fulfilled, (state, action: any) => {
-            console.log('user signed in', action)
-            state.user = {
-                email: action.payload.attributes.email
-            }
-            state.isLoggingIn = false
-            state.loginError = ''
-        })
         builder.addCase(signIn.pending, (state) => {
-            state.isLoggingIn = true
-            state.loginError = ''
+            state.userLoginState = LoadState.getLoadState()
         })
         builder.addCase(signIn.rejected, (state) => {
             console.log('user sign in failed')
-            state.isLoggingIn = false
-            state.loginError = 'Invalid email or password'
+            state.userLoginState = LoadState.getRejectStae('Invalid email of password')
         })
-        builder.addCase(signUp.fulfilled, (state) => {
-            state.isSignUpSuccess = true
-            state.isSigningUp = false
-            state.signUpError = ''
+        builder.addCase(signIn.fulfilled, (state, action: any) => {
+            console.log('user signed in', action)
+            state.userLoginState = LoadState.getSucceedState()
+            state.userLoadState = LoadState.getSucceedState()
+            state.user = {
+                email: action.payload.attributes.email
+            }
         })
         builder.addCase(signUp.pending, (state) => {
-            state.isSignUpSuccess = false
-            state.isSigningUp = true
-            state.signUpError = ''
+            state.userSignUpState = LoadState.getLoadState()
         })
         builder.addCase(signUp.rejected, (state, action: any) => {
-            state.isSignUpSuccess = false
-            state.isSigningUp = false
-            state.signUpError = action.payload
+            state.userSignUpState = LoadState.getRejectStae(action.payload)
+        })
+        builder.addCase(signUp.fulfilled, (state) => {
+            state.userSignUpState = LoadState.getSucceedState()
         })
         builder.addCase(signOut.fulfilled, (state) => {
-            state.user = {email: ''}
             console.log('user signed out')
+            state.user = {email: ''}
+            state.userLoadState = LoadState.getRejectStae()
         })
     }
 })

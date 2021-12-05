@@ -5,30 +5,33 @@ import {LoginPage} from "../pages/login/login.page";
 import {SignupPage} from "../pages/signup/signup.page";
 import {VerificationPage} from "../pages/verification/verification.page";
 import {useSelector} from "react-redux";
-import {selectIsLoaded, selectIsLoggedIn} from "../pages/account/selectors";
 import {LoadingUser} from "../utils/LoadingUser";
+import {selectUserLoadState} from "../pages/account/selectors";
 
 export const AccountModule = () => {
-    const isUserLoaded = useSelector(selectIsLoaded);
-    const isUserLoggedIn = useSelector(selectIsLoggedIn);
+    const userLoadState = useSelector(selectUserLoadState);
     const history = useHistory()
 
     useEffect(() => {
-        if (isUserLoaded && isUserLoggedIn) {
+        if (userLoadState.isReady()) {
             history.push('/topics')
         }
-    }, [isUserLoggedIn, isUserLoaded, history])
+    }, [userLoadState, history])
 
-    if (!isUserLoaded) {
+    if (userLoadState.isLoading()) {
         return <LoadingUser/>
     }
 
-    return (
-        <>
-            <Header/>
-            <Route path="/account/login" component={LoginPage}/>
-            <Route path="/account/signup" component={SignupPage}/>
-            <Route path="/account/verify" component={VerificationPage}/>
-        </>
-    )
+    if (userLoadState.hasFailed()) {
+        return (
+            <>
+                <Header/>
+                <Route path="/account/login" component={LoginPage}/>
+                <Route path="/account/signup" component={SignupPage}/>
+                <Route path="/account/verify" component={VerificationPage}/>
+            </>
+        )
+    }
+
+    return <></>
 }

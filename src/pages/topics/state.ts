@@ -14,7 +14,7 @@ export interface TopicState {
 export const initialState: TopicState = {
     topicIds: [],
     topics: {},
-    topicsLoadState: new LoadState(),
+    topicsLoadState: LoadState.getInitialState(),
     subtopicIds: [],
     subtopics: {},
     selectedSubtopicId: '',

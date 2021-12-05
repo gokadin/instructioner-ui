@@ -6,42 +6,17 @@ export const selectUser = createSelector(
     (state) => state.user
 )
 
-export const selectIsLoaded = createSelector(
+export const selectUserLoadState = createSelector(
     (state: RootState) => state.account,
-    (state) => state.isUserLoaded
+    (state) => state.userLoadState
 )
 
-export const selectIsLoggedIn = createSelector(
+export const selectUserLoginState = createSelector(
     (state: RootState) => state.account,
-    (state) => state.user.email !== ''
+    (state) => state.userLoginState
 )
 
-export const selectIsLoggingIn = createSelector(
+export const selectUserSignUpState = createSelector(
     (state: RootState) => state.account,
-    (state) => state.isLoggingIn
-)
-
-export const selectIsUserLoading = createSelector(
-    (state: RootState) => state.account,
-    (state) => state.isUserLoading
-)
-
-export const selectLoginError = createSelector(
-    (state: RootState) => state.account,
-    (state) => state.loginError
-)
-
-export const selectIsSigningUp = createSelector(
-    (state: RootState) => state.account,
-    (state) => state.isSigningUp
-)
-
-export const selectSignUpError = createSelector(
-    (state: RootState) => state.account,
-    (state) => state.signUpError
-)
-
-export const selectIsSignUpSuccess = createSelector(
-    (state: RootState) => state.account,
-    (state) => state.isSignUpSuccess
+    (state) => state.userSignUpState
 )

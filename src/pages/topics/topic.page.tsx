@@ -17,7 +17,7 @@ export const TopicPage = () => {
             console.log('loading topics')
             dispatch(fetchTopics('8bc82537-dab4-4f76-ab32-12764e586b6a'))
         }
-    }, [dispatch, topicsLoadState])
+    }, [dispatch])
 
     return (
         <VStack align={'stretch'}>

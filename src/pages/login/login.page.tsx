@@ -3,7 +3,7 @@ import {AmplifyGoogleButton} from "@aws-amplify/ui-react";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentUser, signIn} from "../account/reducer";
-import {selectIsLoggingIn, selectLoginError} from "../account/selectors";
+import {selectUserLoginState} from "../account/selectors";
 import {
     Alert,
     AlertIcon,
@@ -17,16 +17,16 @@ import {
     HStack,
     Image,
     Input,
-    Text, useColorModeValue,
+    Text,
+    useColorModeValue,
     VStack
 } from "@chakra-ui/react";
 import validator from "validator";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 export const LoginPage = () => {
     const history = useHistory()
-    const isLoggingIn = useSelector(selectIsLoggingIn)
-    const loginError = useSelector(selectLoginError)
+    const userLoginState = useSelector(selectUserLoginState)
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [emailTouched, setEmailTouched] = useState(false)
@@ -80,10 +80,10 @@ export const LoginPage = () => {
                         <Text color={orColor}>{t("or")}</Text>
                         <Divider/>
                     </HStack>
-                    {!isLoggingIn && loginError !== '' &&
+                    {userLoginState.hasFailed() &&
                     <Alert status="error">
                         <AlertIcon/>
-                        {loginError}
+                        {userLoginState.getFailureMessage()}
                     </Alert>
                     }
                     <FormControl isInvalid={emailTouched && !emailIsValid}>
@@ -102,7 +102,8 @@ export const LoginPage = () => {
                     </FormControl>
                     <FormControl paddingTop={2}>
                         <Button type={'submit'} w={'100%'} size={'md'} colorScheme={'orange'} onClick={submit}
-                                isLoading={isLoggingIn} loadingText={'Logging in'}>{t("login_btn")}</Button>
+                                isLoading={userLoginState.isLoading()}
+                                loadingText={'Logging in'}>{t("login_btn")}</Button>
                     </FormControl>
                     <FormControl>
                         <HStack>

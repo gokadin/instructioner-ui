@@ -1,5 +1,4 @@
 import {API, Auth} from "aws-amplify";
-import {DeleteExercisePayload} from "../builder/api";
 
 const API_NAME = 'userSettingsApi'
 const USER_SETTINGS_API_PATH = 'user-settings'
@@ -10,6 +9,14 @@ export interface SignInPayload {
 }
 
 export const amplifyCurrentUser = () => {
+    Auth.currentSession()
+        .then((x) => {
+            console.log('cs', x)
+        })
+        .catch((x) => {
+            console.log('cs err', x)
+        })
+
     return Auth.currentAuthenticatedUser()
 }
 

@@ -64,9 +64,9 @@ export const TopicCard = ({topic}: Props) => {
         {!topic.isOpen &&
         <Flex px={2}>
             {topic.isSubtopicsLoaded
-                ?
-                <Text mt={'0px !important'} color={topicCountColor}>{completedSubtopicCount}/{subtopics.length} topics</Text>
-                : <Skeleton h={'24px'}/>
+                ? <Text mt={'0px !important'}
+                        color={topicCountColor}>{completedSubtopicCount}/{subtopics.length} topics</Text>
+                : <Skeleton w={'full'} h={'24px'}/>
             }
             <Spacer/>
             {completedSubtopicCount > 0 &&

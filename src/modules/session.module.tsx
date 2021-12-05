@@ -3,28 +3,31 @@ import {Route, useHistory} from "react-router-dom";
 import {ExercisePage} from "../pages/exercise/exercise.page";
 import {CompletePage} from "../pages/complete/complete.page";
 import {useSelector} from "react-redux";
-import {selectIsLoaded, selectIsLoggedIn} from "../pages/account/selectors";
+import {selectUserLoadState} from "../pages/account/selectors";
 import {LoadingUser} from "../utils/LoadingUser";
 
 export const SessionModule = () => {
-    const isUserLoaded = useSelector(selectIsLoaded);
-    const isUserLoggedIn = useSelector(selectIsLoggedIn);
+    const userLoadState = useSelector(selectUserLoadState)
     const history = useHistory()
 
     useEffect(() => {
-        if (isUserLoaded && !isUserLoggedIn) {
+        if (userLoadState.hasFailed()) {
             history.push('/account/login')
         }
-    }, [isUserLoggedIn, isUserLoaded, history])
+    }, [userLoadState, history])
 
-    if (!isUserLoaded) {
+    if (userLoadState.isLoading()) {
         return <LoadingUser/>
     }
 
-    return (
-        <>
-            <Route path="/session" exact component={ExercisePage}/>
-            <Route path="/session/complete" component={CompletePage}/>
-        </>
-    )
+    if (userLoadState.isReady()) {
+        return (
+            <>
+                <Route path="/session" exact component={ExercisePage}/>
+                <Route path="/session/complete" component={CompletePage}/>
+            </>
+        )
+    }
+
+    return <></>
 }

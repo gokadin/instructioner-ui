@@ -1,23 +1,16 @@
 import {UserEntity} from "../../models/user.entity";
+import {LoadState} from "../../utils/loadState";
 
 export interface AccountState {
     user: UserEntity
-    isUserLoading: boolean
-    isUserLoaded: boolean
-    isLoggingIn: boolean
-    loginError: string
-    isSigningUp: boolean
-    signUpError: string
-    isSignUpSuccess: boolean
+    userLoadState: LoadState
+    userLoginState: LoadState
+    userSignUpState: LoadState
 }
 
 export const initialState: AccountState = {
     user: {email: ''},
-    isUserLoading: false,
-    isUserLoaded: false,
-    isLoggingIn: false,
-    loginError: '',
-    isSigningUp: false,
-    signUpError: '',
-    isSignUpSuccess: false
+    userLoadState: LoadState.getInitialState(),
+    userLoginState: LoadState.getInitialState(),
+    userSignUpState: LoadState.getInitialState(),
 }

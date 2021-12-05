@@ -1,14 +1,14 @@
 export class LoadState {
-    private _isLoaded: boolean
-    private _isLoading: boolean
-    private _isFailed: boolean
-    private _error: string
+    private readonly _isLoaded: boolean
+    private readonly _isLoading: boolean
+    private readonly _isFailed: boolean
+    private readonly _error: string
 
-    public constructor() {
-        this._isLoaded = false
-        this._isLoading = false
-        this._isFailed = false
-        this._error = ''
+    private constructor(isLoaded: boolean, isLoading: boolean, isFailed: boolean, error: string) {
+        this._isLoaded = isLoaded
+        this._isLoading = isLoading
+        this._isFailed = isFailed
+        this._error = error
     }
 
     public shouldLoad = (): boolean => {
@@ -31,30 +31,19 @@ export class LoadState {
         return this._error
     }
 
+    public static getInitialState = (): LoadState => {
+        return new LoadState(false, false, false, '')
+    }
+
     public static getLoadState = (): LoadState => {
-        const state = new LoadState()
-        state._isLoading = true
-        state._isLoaded = false
-        state._isFailed = false
-        state._error = ''
-        return state
+        return new LoadState(false, true, false, '')
     }
 
     public static getRejectStae = (error: string = ''): LoadState => {
-        const state = new LoadState()
-        state._isLoaded = true
-        state._isLoading = false
-        state._isFailed = true
-        state._error = error
-        return state
+        return new LoadState(true, false, true, error)
     }
 
     public static getSucceedState = (): LoadState => {
-        const state = new LoadState()
-        state._isLoaded = true
-        state._isLoading = false
-        state._isFailed = false
-        state._error = ''
-        return state
+        return new LoadState(true, false, false, '')
     }
 }
