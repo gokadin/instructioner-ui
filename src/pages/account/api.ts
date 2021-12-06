@@ -8,12 +8,10 @@ export interface SignInPayload {
     password: string
 }
 
-export const amplifyCurrentSession = () => {
-    return Auth.currentSession()
-}
-
 export const amplifyCurrentUser = () => {
-    return Auth.currentAuthenticatedUser()
+    return Auth.currentAuthenticatedUser({
+        bypassCache: true
+    })
 }
 
 export const amplifySignIn = (payload: SignInPayload) => {

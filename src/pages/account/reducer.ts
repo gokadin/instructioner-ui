@@ -1,20 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {initialState} from "./state";
-import {
-    amplifyCurrentSession,
-    amplifyCurrentUser,
-    amplifySignIn,
-    amplifySignOut,
-    amplifySignUp,
-    SignInPayload,
-    SignUpPayload
-} from "./api";
+import {amplifyCurrentUser, amplifySignIn, amplifySignOut, amplifySignUp, SignInPayload, SignUpPayload} from "./api";
 import {LoadState} from "../../utils/loadState";
 
 export const getCurrentUser = createAsyncThunk('account/getCurrentUser', async (_, thunkAPI) => {
     try {
-        const data = await amplifyCurrentSession()
-        console.log('current session', data)
         return await amplifyCurrentUser()
     } catch (error) {
         console.log(error)
