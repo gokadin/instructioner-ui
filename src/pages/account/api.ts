@@ -8,15 +8,11 @@ export interface SignInPayload {
     password: string
 }
 
-export const amplifyCurrentUser = () => {
-    Auth.currentSession()
-        .then((x) => {
-            console.log('cs', x)
-        })
-        .catch((x) => {
-            console.log('cs err', x)
-        })
+export const amplifyCurrentSession = () => {
+    return Auth.currentSession()
+}
 
+export const amplifyCurrentUser = () => {
     return Auth.currentAuthenticatedUser()
 }
 
