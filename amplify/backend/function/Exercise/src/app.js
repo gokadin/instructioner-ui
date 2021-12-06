@@ -59,10 +59,18 @@ const VARIABLE_SYMBOL = '@var'
 const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
 
 const SOLVE_SYMBOL = '@solve'
-const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z()]+)\\)`
+const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,\\.()]+)\\)`
 
 const processExercises = (exercises) => {
-    const parsed = exercises.map(processExercise)
+    const parsed = []
+
+    exercises.forEach(exercise => {
+        try {
+            parsed.push(processExercise(exercise))
+        } catch (e) {
+            console.log(`could not process exercise ${exercise.name}`, e)
+        }
+    })
 
     parsed.sort((a, b) => (a.difficulty < b.difficulty) ? -1 : 1)
 

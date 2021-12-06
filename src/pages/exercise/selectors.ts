@@ -15,9 +15,9 @@ export const selectCurrentExercise = createSelector(
     (state) => state.exercises[state.currentExerciseId]
 )
 
-export const selectIsCurrentExerciseLoaded = createSelector(
+export const selectSessionLoadState = createSelector(
     (state: RootState) => state.exercise,
-    (state) => state.isExercisesLoaded && state.currentExerciseId in state.exercises
+    (state) => state.sessionLoadState
 )
 
 export const selectCurrentSessionSubtopicId = createSelector(
@@ -37,7 +37,7 @@ export const selectCurrentExerciseIndex = createSelector(
 
 export const selectHints = createSelector(
     selectCurrentExercise,
-    (exercise) => exercise.hints
+    (exercise) => exercise ? exercise.hints : []
 )
 
 export const selectSelectedAnswerFieldIndex = createSelector(

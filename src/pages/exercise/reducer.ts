@@ -3,6 +3,7 @@ import {initialState} from "./state";
 import {normalize} from "normalizr";
 import {exerciseSchemaList} from "../../models/schemas";
 import {getExercises} from "./api";
+import {LoadState} from "../../utils/loadState";
 
 export const fetchExercises = createAsyncThunk('exercise/fetch', async (subtopicId: string) => {
     const data = await getExercises(subtopicId)
@@ -16,7 +17,7 @@ const slice = createSlice({
     reducers: {
         beginSession: (state) => {
             state.currentExerciseIndex = 0
-            if (!state.isExercisesLoaded) {
+            if (!state.sessionLoadState.isReady()) {
                 return
             }
 
@@ -58,13 +59,13 @@ const slice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(fetchExercises.pending, (state) => {
-            state.isExercisesLoaded = false
+            state.sessionLoadState = LoadState.getLoadState()
         })
         builder.addCase(fetchExercises.rejected, (state) => {
-            state.isExercisesLoaded = false
+            state.sessionLoadState = LoadState.getRejectStae()
         })
         builder.addCase(fetchExercises.fulfilled, (state, action: any) => {
-            state.isExercisesLoaded = true
+            state.sessionLoadState = LoadState.getSucceedState()
             if (!action.payload.exercise) {
                 return
             }

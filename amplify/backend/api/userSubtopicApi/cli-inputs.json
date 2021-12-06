@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "paths": {
+    "/user-subtopics": {
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      },
+      "lambdaFunction": "UserSubtopic"
+    }
+  }
+}

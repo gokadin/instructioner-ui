@@ -12,60 +12,86 @@
 //     expect(result).toBe('11');
 // })
 //
-// test('process exercise', () => {
-//     const exercise = {
-//         "subtopicId": "e8b5c90f-8058-453b-b20c-186526630e0a",
-//         "id": "d2277b0f-f636-4fd2-a324-a8646ffbebb4",
-//         "question": "Find the derivative of:\n$$f(x)=x+@var(a)-@var(b)$$",
-//         "hints": [
-//             {
-//                 "content": "$$f\\'(x)=\\lim_{h \\\\to \\\\infty} \\\\frac{f(x+h)-f(x)}{h}$$"
-//             },
-//             {
-//                 "content": "$$f(x)=x+@solve(@var(a)-@var(b))$$ and $$f(x+h)=x+@solve(@var(a)-@var(b))+h$$\n$$=\\\\lim_{h \\\\to \\\\infty} \\\\frac{x+@solve(@var(a)-@var(b))+h-(x+@solve(@var(a)-@var(b))}{h}$$"
-//             }
-//         ],
-//         "answerFields": [
-//             {
-//                 "content": "$1$",
-//                 "isCorrect": true
-//             },
-//             {
-//                 "content": "$x$",
-//                 "isCorrect": false
-//             },
-//             {
-//                 "content": "$@solve(@var(a)+@var(b))$",
-//                 "isCorrect": false
-//             },
-//             {
-//                 "content": "$0$",
-//                 "isCorrect": false
-//             }
-//         ],
-//         "variables": [
-//             {
-//                 "name": "a",
-//                 "default": "15",
-//                 "rangeStart": "11",
-//                 "type": "integer",
-//                 "rangeEnd": "20"
-//             },
-//             {
-//                 "name": "b",
-//                 "default": "6",
-//                 "rangeStart": "1",
-//                 "type": "integer",
-//                 "rangeEnd": "9"
-//             }
-//         ],
-//         "name": "1st degree (2)"
-//     }
-//
-//     const result = processExercise(exercise)
-//
-//     expect(result.question).toBe('Find the derivative of:\n$$f(x)=x+15-6$$');
-// })
+const processExercise = (exercise) => {
+    let variables = resolveVariables(exercise.variables)
+
+    return {
+        ...exercise,
+        question: parseContent(exercise.question, variables),
+        answerFields: shuffleArray(exercise.answerFields.map(answerField => {
+            return {
+                ...answerField,
+                content: parseContent(answerField.content, variables)
+            }
+        })),
+        hints: exercise.hints.map(hint => {
+            return {
+                ...hint,
+                content: parseContent(hint.content, variables)
+            }
+        })
+    }
+}
+
+const shuffleArray = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]]
+    }
+    return a
+}
+
+test('process exercise', () => {
+    const exercise = {
+        "subtopicId": "b146e06b-812a-4610-bc00-8efeafcbd26a",
+        "id": "acc47691-e66e-48ee-a736-e3ca10ef8d88",
+        "question": "Find the derivative of:\n$$f(x) = @var(a)x^@var(b)$$",
+        "hints": [
+            {
+                "content": "Apply the power rule:\n$$f^\prime(x) = ax^{a-1}$$"
+            }
+        ],
+        "answerFields": [
+            {
+                "content": "$@solve(@var(a)*@var(b))x^{@solve(@var(b)-1)}$",
+                "isCorrect": true
+            },
+            {
+                "content": "$@solve(@var(a)*@var(b))x^{@solve(@var(b)+1)}$",
+                "isCorrect": false
+            },
+            {
+                "content": "$@solve(@var(a)*@var(b)-1)x^{@var(b)}$",
+                "isCorrect": false
+            },
+            {
+                "content": "$@solve(@var(a)*@var(b)-1)x$",
+                "isCorrect": false
+            }
+        ],
+        "variables": [
+            {
+                "name": "a",
+                "default": "3",
+                "rangeStart": "2",
+                "type": "integer",
+                "rangeEnd": "5"
+            },
+            {
+                "name": "b",
+                "default": "3",
+                "rangeStart": "2",
+                "type": "integer",
+                "rangeEnd": "6"
+            }
+        ],
+        "difficulty": 1,
+        "name": "simple (2)"
+    }
+    const result = processExercise(exercise)
+
+    expect(result.question).toBe('Find the derivative of:\n$$f(x)=x+15-6$$');
+})
 
 const {evaluate} = require("mathjs");
 const UNIT_EXP_REGEX = '\\^1|\\^{[1]}'
@@ -138,6 +164,30 @@ test('applyMathPostProcesses transforms multiple expressions', () => {
 const VARIABLE_SYMBOL = '@var'
 const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
 
+const resolveVariables = (variables) => {
+    let resolved = {}
+    variables.forEach(variable => {
+        const min = Math.ceil(variable.rangeStart)
+        const max = Math.floor(variable.rangeEnd)
+        resolved[variable.name] = Math.floor(Math.random() * (max - min + 1) + min)
+    })
+    return resolved
+}
+
+test('resolve variables', () => {
+    const variables = [
+        {
+            "name": "a",
+            "default": "3",
+            "rangeStart": "2",
+            "type": "integer",
+            "rangeEnd": "6"
+        }
+    ]
+
+    expect(resolveVariables(variables).a).toBe(3)
+})
+
 const SOLVE_SYMBOL = '@solve'
 const SOLVE_REGEX = `${SOLVE_SYMBOL}\\(([0-9+\\-_*\\/%^\\s,a-zA-Z()]+)\\)`
 const parseContent = (content, variables) => {
@@ -155,6 +205,10 @@ const parseContent = (content, variables) => {
 }
 
 test('parseContent transforms multiple expressions', () => {
-    expect(parseContent('$\\frac{@solve(@var(a)*@var(b))}{@var(c)}x^{\\frac{@solve(@var(b)-@var(c))}{@var(c)}}$', {a: 4, b: 6, c: 4}))
+    expect(parseContent('$\\frac{@solve(@var(a)*@var(b))}{@var(c)}x^{\\frac{@solve(@var(b)-@var(c))}{@var(c)}}$', {
+        a: 4,
+        b: 6,
+        c: 4
+    }))
         .toBe('$6x^{\\frac{1}{2}}$')
 })
