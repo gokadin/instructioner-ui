@@ -4,14 +4,13 @@ import {SessionHeader} from "../../components/exercise/sessionHeader";
 import {ExerciseContainer} from "../../components/exercise/exerciseContainer";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchExercises} from "./reducer";
-import {selectCurrentExercise, selectCurrentSessionSubtopicId, selectSessionLoadState} from "./selectors";
+import {selectCurrentExercise, selectSessionLoadState} from "./selectors";
 import {selectSelectedSubtopic} from "../topics/selectors";
 import {useHistory} from "react-router-dom";
 
 export const ExercisePage = () => {
     const exercise = useSelector(selectCurrentExercise)
     const sessionLoadState = useSelector(selectSessionLoadState)
-    const currentSessionSubtopicId = useSelector(selectCurrentSessionSubtopicId)
     const selectedSubtopic = useSelector(selectSelectedSubtopic)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -24,7 +23,7 @@ export const ExercisePage = () => {
         }
 
         dispatch(fetchExercises(selectedSubtopic.id))
-    }, [dispatch, history, selectedSubtopic, currentSessionSubtopicId])
+    }, [dispatch, history, selectedSubtopic])
 
     return (
         <VStack h={'full'} align="stretch">

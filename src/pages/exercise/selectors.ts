@@ -20,11 +20,6 @@ export const selectSessionLoadState = createSelector(
     (state) => state.sessionLoadState
 )
 
-export const selectCurrentSessionSubtopicId = createSelector(
-    (state: RootState) => state.exercise,
-    (state) => state.loadedSubtopicId
-)
-
 export const selectExerciseCount = createSelector(
     (state: RootState) => state.exercise,
     (state) => state.exerciseIds.length

@@ -52,6 +52,7 @@ export const ButtonBar = ({exercise}: Props) => {
         <HStack w={'full'} alignItems={'center'} h={'16'} align={'stretch'} px={4} py={2} bg={bgColor}
                 mt={'0px !important'} borderBottomRadius={'md'} spacing={3}>
             <IconButton aria-label={'Show answer'} size={'lg'} variant={'outline'} colorScheme={'red'}
+                        disabled={exercise.isCompleted}
                         icon={<ViewIcon/>}
                         onClick={handleShowAnswer}/>
             <IconButton aria-label={'Hints'} size={'lg'} variant={'outline'} colorScheme={'orange'} lineHeight={'md'}

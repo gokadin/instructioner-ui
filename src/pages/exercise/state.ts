@@ -7,7 +7,6 @@ export interface ExerciseState {
     sessionLoadState: LoadState
     currentExerciseId: string
     currentExerciseIndex: number
-    loadedSubtopicId: string
 }
 
 export const initialState: ExerciseState = {
@@ -15,6 +14,5 @@ export const initialState: ExerciseState = {
     exercises: {},
     sessionLoadState: LoadState.getInitialState(),
     currentExerciseId: '',
-    currentExerciseIndex: 0,
-    loadedSubtopicId: ''
+    currentExerciseIndex: 0
 }

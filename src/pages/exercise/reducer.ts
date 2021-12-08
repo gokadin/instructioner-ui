@@ -73,7 +73,6 @@ const slice = createSlice({
             state.exerciseIds = exerciseIds
             state.exercises = action.payload.exercise
             state.currentExerciseId = exerciseIds[state.currentExerciseIndex]
-            state.loadedSubtopicId = action.meta.arg
         })
     }
 })
