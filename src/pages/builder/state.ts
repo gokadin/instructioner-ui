@@ -1,9 +1,12 @@
 import {VariableEntity} from "../../models/variable.entity";
 import {AnswerFieldEntity} from "../../models/answerField.entity";
 import {HintEntity} from "../../models/hint.entity";
+import {LoadState} from "../../utils/loadState";
 
 export interface BuilderState {
+    editExerciseLoadState: LoadState
     isInPreview: boolean
+    id: string
     name: string
     question: string
     questionFormatted: string
@@ -15,7 +18,9 @@ export interface BuilderState {
 }
 
 export const initialState: BuilderState = {
+    editExerciseLoadState: LoadState.getInitialState(),
     isInPreview: false,
+    id: '',
     question: '',
     questionFormatted: '',
     name: '',
@@ -25,13 +30,13 @@ export const initialState: BuilderState = {
     answerFields: [{
         isCorrect: true,
         content: ''
-    },{
+    }, {
         isCorrect: false,
         content: ''
-    },{
+    }, {
         isCorrect: false,
         content: ''
-    },{
+    }, {
         isCorrect: false,
         content: ''
     }],

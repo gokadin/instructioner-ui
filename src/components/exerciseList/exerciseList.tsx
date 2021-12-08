@@ -1,16 +1,31 @@
 import React from "react";
-import {Badge, Table, Tbody, Td, Tfoot, Th, Thead, Tr} from "@chakra-ui/react";
+import {Badge, Button, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast} from "@chakra-ui/react";
 import {ExerciseEntity} from "../../models/exercise.entity";
 import {DeleteIcon} from "@chakra-ui/icons";
 import {useDispatch} from "react-redux";
-import {removeExercise} from "../../pages/builder/reducer";
+import {useHistory, useParams} from "react-router-dom";
+import {removeExercise} from "../../pages/exerciseList/reducer";
 
 interface Props {
     exercises: ExerciseEntity[]
 }
 
 export const ExerciseList = ({exercises}: Props) => {
+    const history = useHistory()
+    const {subtopicId}: any = useParams()
     const dispatch = useDispatch()
+    const toast = useToast()
+
+    const handleRemove = async (exercise: ExerciseEntity) => {
+        await dispatch(removeExercise(exercise))
+        toast({
+            title: 'Success',
+            description: 'Exercise deleted',
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+        })
+    }
 
     return (
         <Table variant='simple'>
@@ -24,12 +39,12 @@ export const ExerciseList = ({exercises}: Props) => {
             <Tbody>
                 {exercises.map((exercise, i) => {
                     return <Tr>
-                        <Td>{exercise.name}</Td>
+                        <Td><Button variant={'link'} onClick={() => history.push(`/admin/${subtopicId}/${exercise.id}/builder`)}>{exercise.name}</Button></Td>
                         <Td>
                             <Badge>{exercise.difficulty}</Badge>
                         </Td>
                         <Td>
-                            <DeleteIcon onClick={() => dispatch(removeExercise(exercise))}/>
+                            <DeleteIcon onClick={() => handleRemove(exercise)}/>
                         </Td>
                     </Tr>
                 })}

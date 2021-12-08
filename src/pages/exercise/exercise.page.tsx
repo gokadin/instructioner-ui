@@ -22,9 +22,8 @@ export const ExercisePage = () => {
             history.push('/topics')
             return
         }
-        if (sessionLoadState.shouldLoad() || (sessionLoadState.isReady() && currentSessionSubtopicId !== selectedSubtopic.id)) {
-            dispatch(fetchExercises(selectedSubtopic.id))
-        }
+
+        dispatch(fetchExercises(selectedSubtopic.id))
     }, [dispatch, history, selectedSubtopic, currentSessionSubtopicId])
 
     return (

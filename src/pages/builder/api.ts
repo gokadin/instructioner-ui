@@ -6,8 +6,9 @@ import {VariableEntity} from "../../models/variable.entity";
 const API_NAME = 'exerciseApi'
 const EXERCISE_API_PATH = 'exercises'
 
-export interface PostExercisePayload {
+export interface PutExercisePayload {
     subtopicId: string
+    id: string
     name: string
     difficulty: number
     question: string
@@ -16,8 +17,8 @@ export interface PostExercisePayload {
     variables: VariableEntity[]
 }
 
-export const postExercise = (payload: PostExercisePayload) => {
-    return API.post(API_NAME, `/${EXERCISE_API_PATH}`, {body: payload})
+export const putExercise = (payload: PutExercisePayload) => {
+    return API.put(API_NAME, `/${EXERCISE_API_PATH}`, {body: payload})
 }
 
 export interface DeleteExercisePayload {
@@ -27,4 +28,12 @@ export interface DeleteExercisePayload {
 
 export const deleteExercise = (payload: DeleteExercisePayload) => {
     return API.del(API_NAME, `/${EXERCISE_API_PATH}/object/${payload.subtopicId}/${payload.id}`, null)
+}
+
+export interface GetExerciseDefinitionPayload {
+    subtopicId: string
+    exerciseId: string
+}
+export const getExerciseDefinition = (payload: GetExerciseDefinitionPayload) => {
+    return API.get(API_NAME, `/${EXERCISE_API_PATH}/object/${payload.subtopicId}/${payload.exerciseId}`, null)
 }

@@ -2,6 +2,11 @@ import {createSelector} from "reselect";
 import {RootState} from "../../reducer";
 import {parsePreviewContent} from "../../utils/builder.utils";
 
+export const selectEditExerciseLoadState = createSelector(
+    (state: RootState) => state.builder,
+    (state) => state.editExerciseLoadState
+)
+
 export const selectVariables = createSelector(
     (state: RootState) => state.builder,
     (state) => state.variableIds.map(variableId => state.variables[variableId])

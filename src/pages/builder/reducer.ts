@@ -1,18 +1,21 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {initialState} from "./state";
 import {VariableEntity} from "../../models/variable.entity";
-import {deleteExercise, postExercise} from "./api";
+import {getExerciseDefinition, GetExerciseDefinitionPayload, putExercise} from "./api";
 import {RootState} from "../../reducer";
-import {ExerciseEntity} from "../../models/exercise.entity";
-import {re} from "mathjs";
+import {formatContent, parseVariables} from "./utils";
+import {v4 as uuidv4} from 'uuid'
+import {LoadState} from "../../utils/loadState";
 
-const VARIABLE_SYMBOL = '@var'
-const VARIABLE_REGEX = `${VARIABLE_SYMBOL}\\((\\w+)\\)`
+export const fetchExerciseDefinition = createAsyncThunk('admin/fetchExerciseDefinition', async (payload: GetExerciseDefinitionPayload) => {
+    return await getExerciseDefinition(payload)
+})
 
 export const createExercise = createAsyncThunk('builder/createExercise', async (_, thunkAPI) => {
     const state: RootState = thunkAPI.getState() as RootState
-    return await postExercise({
+    return await putExercise({
         subtopicId: state.admin.selectedSubtopicId,
+        id: (!state.builder.id || state.builder.id === '') ? uuidv4() : state.builder.id,
         name: state.builder.name,
         difficulty: state.builder.difficulty,
         question: state.builder.question,
@@ -20,11 +23,6 @@ export const createExercise = createAsyncThunk('builder/createExercise', async (
         hints: state.builder.hints,
         variables: state.builder.variableIds.map(variableId => state.builder.variables[variableId])
     })
-})
-
-export const removeExercise = createAsyncThunk('builder/removeExercise', async (exercise: ExerciseEntity) => {
-    const data = await deleteExercise({subtopicId: exercise.subtopicId, id: exercise.id})
-    console.log('exercise deleted', exercise.id, data)
 })
 
 const slice = createSlice({
@@ -39,21 +37,12 @@ const slice = createSlice({
             state.hints.forEach(hint => content += hint.content)
             state.answerFields.forEach(answerField => content += answerField.content)
 
-            const regex = new RegExp(VARIABLE_REGEX, 'gm')
-            let match
-            while ((match = regex.exec(content)) !== null) {
-                if (!state.variableIds.includes(match[1])) {
-                    const variable: VariableEntity = {
-                        name: match[1],
-                        type: 'integer',
-                        rangeStart: '0',
-                        rangeEnd: '9',
-                        default: '5'
-                    }
+            parseVariables(content).forEach((variable: VariableEntity) => {
+                if (!state.variableIds.includes(variable.name)) {
                     state.variableIds.push(variable.name)
                     state.variables = {...state.variables, [variable.name]: variable}
                 }
-            }
+            })
         },
         setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload
@@ -63,11 +52,7 @@ const slice = createSlice({
         },
         setQuestionContent: (state, action: PayloadAction<string>) => {
             state.question = action.payload
-            const regex = new RegExp(VARIABLE_REGEX, 'gm')
-            let formatted = action.payload.replace(regex, (match) => {
-                return `<mark class='highlight'>${match}</mark>`
-            })
-            state.questionFormatted = formatted.replaceAll('\n', '<br>')
+            state.questionFormatted = formatContent(action.payload)
         },
         setHintContent: (state, action: PayloadAction<{ index: number, content: string }>) => {
             state.hints[action.payload.index].content = action.payload.content
@@ -114,16 +99,37 @@ const slice = createSlice({
             state.hints.splice(action.payload, 1)
         },
         clearState: (state) => {
+            state.isInPreview = initialState.isInPreview
             state.name = initialState.name
             state.question = initialState.question
+            state.questionFormatted = initialState.questionFormatted
             state.difficulty = initialState.difficulty
             state.variableIds = initialState.variableIds
             state.variables = initialState.variables
             state.answerFields = initialState.answerFields
             state.hints = initialState.hints
+            state.editExerciseLoadState = initialState.editExerciseLoadState
         }
     },
     extraReducers: builder => {
+        builder.addCase(fetchExerciseDefinition.pending, (state) => {
+            state.editExerciseLoadState = LoadState.getLoadState()
+        })
+        builder.addCase(fetchExerciseDefinition.rejected, (state) => {
+            state.editExerciseLoadState = LoadState.getRejectStae()
+        })
+        builder.addCase(fetchExerciseDefinition.fulfilled, (state, action: any) => {
+            state.editExerciseLoadState = LoadState.getSucceedState()
+            state.id = action.payload.id
+            state.name = action.payload.name
+            state.question = action.payload.question
+            state.questionFormatted = formatContent(action.payload.question)
+            state.difficulty = action.payload.difficulty
+            state.hints = action.payload.hints
+            state.answerFields = action.payload.answerFields
+            state.variableIds = action.payload.variables.map((variable: VariableEntity) => variable.name)
+            action.payload.variables.forEach((variable: VariableEntity) => state.variables[variable.name] = variable)
+        })
         builder.addCase(createExercise.fulfilled, (state, action: any) => {
             console.log('exercise created', action)
         })

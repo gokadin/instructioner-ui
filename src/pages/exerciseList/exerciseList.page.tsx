@@ -2,29 +2,26 @@ import React, {useEffect} from "react";
 import {Box, Button, ButtonGroup, HStack, Text, VStack} from "@chakra-ui/react";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {selectSelectedSubtopicId} from "../admin/selectors";
 import {ExerciseList} from "../../components/exerciseList/exerciseList";
-import {fetchExercises} from "../exercise/reducer";
-import {RootState} from "../../reducer";
-import {selectExercises} from "../exercise/selectors";
+import {selectExercises, selectLoadState} from "./selectors";
 import {useHistory, useParams} from "react-router-dom";
-import {adminActions} from "../admin/reducer";
+import {exerciseListActions, fetchExercises} from "./reducer";
 
 export const ExerciseListPage = () => {
     const history = useHistory()
-    const selectedSubtopicId = useSelector(selectSelectedSubtopicId)
-    const exercises = useSelector((state: RootState) => selectExercises(state, selectedSubtopicId))
+    const exercises = useSelector(selectExercises)
+    const loadState = useSelector(selectLoadState)
     const dispatch = useDispatch()
     const {subtopicId}: any = useParams()
 
     useEffect(() => {
-        if (subtopicId) {
-            dispatch(adminActions.setSubtopic(subtopicId))
+        if (subtopicId && loadState.shouldLoad()) {
             dispatch(fetchExercises(subtopicId))
         }
     }, [dispatch, subtopicId])
 
-    const handleChangeTopic = () => {
+    const handleChangeTopic = async () => {
+        dispatch(exerciseListActions.invalidateList())
         history.push('/admin')
     }
 
@@ -34,7 +31,7 @@ export const ExerciseListPage = () => {
                 <HStack>
                     <Text>Exercises for subtopic {subtopicId}</Text>
                     <Button rightIcon={<AddIcon/>}
-                            onClick={() => history.push(`/admin/${subtopicId}/builder`)}>Add</Button>
+                            onClick={() => history.push(`/admin/${subtopicId}/new/builder`)}>Add</Button>
                 </HStack>
             </Box>
             {exercises &&

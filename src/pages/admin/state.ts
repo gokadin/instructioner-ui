@@ -2,6 +2,7 @@ import {SubjectEntity} from "../../models/subject.entity";
 import {CourseEntity} from "../../models/course.entity";
 import {TopicEntity} from "../../models/topic.entity";
 import {SubtopicEntity} from "../../models/subtopic.entity";
+import {ExerciseEntity} from "../../models/exercise.entity";
 
 export interface AdminState {
     subjectIds: string[]
@@ -16,6 +17,8 @@ export interface AdminState {
     subtopicIds: string[]
     subtopics: Record<string, SubtopicEntity>
     selectedSubtopicId: string
+    exerciseIds: string[]
+    exercises: Record<string, ExerciseEntity>
 }
 
 export const initialState: AdminState = {
@@ -30,5 +33,7 @@ export const initialState: AdminState = {
     selectedTopicId: '',
     subtopicIds: [],
     subtopics: {},
-    selectedSubtopicId: ''
+    selectedSubtopicId: '',
+    exerciseIds: [],
+    exercises: {},
 }

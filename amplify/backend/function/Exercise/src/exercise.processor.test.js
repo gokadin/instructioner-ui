@@ -108,13 +108,17 @@ test('removeUnitExp without braces', () => {
     expect(removeUnitExp('x^1')).toBe('x')
 })
 
-const SIMPL_FRAC_REGEX = '\\\\frac{(\\d+)}{(\\d+)}'
+const SIMPL_FRAC_REGEX = '\\\\frac\\s*{\\s*(-?\\d+)\\s*}\\s*{\\s*(-?\\d+)\\s*}'
 const simplifyFractions = (content) => {
     const regex = new RegExp(SIMPL_FRAC_REGEX, 'gm')
     return content.replace(regex, (match, numerator, denominator) => {
-        const gcd = greaterCommonDenominator(numerator, denominator)
+        const gcd = greaterCommonDenominator(Math.abs(numerator), Math.abs(denominator))
         numerator /= gcd
         denominator /= gcd
+        if (numerator < 0 && denominator < 0) {
+            numerator *= -1
+            denominator *= -1
+        }
         return denominator > 1 ? `\\frac{${numerator}}{${denominator}}` : numerator
     })
 }
@@ -131,8 +135,20 @@ test('simplifyFractions for valid expression with greater denominator', () => {
     expect(simplifyFractions('\frac{6}{18}')).toBe('\frac{1}{3}')
 })
 
+test('simplifyFractions for valid expression with negative number', () => {
+    expect(simplifyFractions('\\frac{-6}{18}')).toBe('\\frac{-1}{3}')
+})
+
+test('simplifyFractions for valid expression with two negative numbers', () => {
+    expect(simplifyFractions('\\frac{-6}{-18}')).toBe('\\frac{1}{3}')
+})
+
 test('simplifyFractions for valid expression of large numbers', () => {
-    expect(simplifyFractions('\frac{1024}{4}')).toBe('256')
+    expect(simplifyFractions('\\frac{1024}{4}')).toBe('256')
+})
+
+test('simplifyFractions with lots of whitespaces', () => {
+    expect(simplifyFractions('\\frac {  1024 } { 4 }')).toBe('256')
 })
 
 test('simplifyFractions for invalid expression', () => {

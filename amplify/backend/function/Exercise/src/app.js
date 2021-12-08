@@ -126,8 +126,8 @@ const MATH_EXPRESSION_REGEX = '(\\$)([^$]+)(\\$)'
 const applyMathPostProcesses = (content) => {
     const regex = new RegExp(MATH_EXPRESSION_REGEX, 'gm')
     return content.replace(regex, (match, openingSymbol, mathContent, closingSymbol) => {
-        mathContent = removeUnitExp(mathContent)
         mathContent = simplifyFractions(mathContent)
+        mathContent = removeUnitExp(mathContent)
         return `${openingSymbol}${mathContent}${closingSymbol}`
     })
 }
@@ -138,13 +138,17 @@ const removeUnitExp = (content) => {
     return content.replace(regex, '')
 }
 
-const SIMPL_FRAC_REGEX = '\\\\frac{(\\d+)}{(\\d+)}'
+const SIMPL_FRAC_REGEX = '\\\\frac\\s*{\\s*(-?\\d+)\\s*}\\s*{\\s*(-?\\d+)\\s*}'
 const simplifyFractions = (content) => {
     const regex = new RegExp(SIMPL_FRAC_REGEX, 'gm')
     return content.replace(regex, (match, numerator, denominator) => {
-        const gcd = greaterCommonDenominator(numerator, denominator)
+        const gcd = greaterCommonDenominator(Math.abs(numerator), Math.abs(denominator))
         numerator /= gcd
         denominator /= gcd
+        if (numerator < 0 && denominator < 0) {
+            numerator *= -1
+            denominator *= -1
+        }
         return denominator > 1 ? `\\frac{${numerator}}{${denominator}}` : numerator
     })
 }

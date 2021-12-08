@@ -29,7 +29,7 @@ export const AdminModule = () => {
                 <Header/>
                 <Route path="/admin" component={AdminPage} exact/>
                 <Route path="/admin/:subtopicId/exercises" component={ExerciseListPage}/>
-                <Route path="/admin/:subtopicId/builder" component={BuilderPage}/>
+                <Route path="/admin/:subtopicId/:exerciseId/builder" component={BuilderPage}/>
             </>
         )
     }
