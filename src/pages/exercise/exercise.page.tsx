@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Box, VStack} from "@chakra-ui/react"
+import {Box, Skeleton, Stack, VStack} from "@chakra-ui/react"
 import {SessionHeader} from "../../components/exercise/sessionHeader";
 import {ExerciseContainer} from "../../components/exercise/exerciseContainer";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,6 +7,7 @@ import {fetchExercises} from "./reducer";
 import {selectCurrentExercise, selectSessionLoadState} from "./selectors";
 import {selectSelectedSubtopic} from "../topics/selectors";
 import {useHistory} from "react-router-dom";
+import {FailMessage} from "../../utils/FailMessage";
 
 export const ExercisePage = () => {
     const exercise = useSelector(selectCurrentExercise)
@@ -25,14 +26,30 @@ export const ExercisePage = () => {
         dispatch(fetchExercises(selectedSubtopic.id))
     }, [dispatch, history, selectedSubtopic])
 
-    return (
-        <VStack h={'full'} align="stretch">
-            <Box>
-                <SessionHeader/>
-            </Box>
-            {selectedSubtopic &&
-            <ExerciseContainer exercise={exercise} sessionLoadState={sessionLoadState}/>
-            }
-        </VStack>
-    )
+    if (sessionLoadState.isLoading()) {
+        return <Stack p={4}>
+            <Skeleton h={'100px'}/>
+            <Skeleton h={'100px'}/>
+            <Skeleton h={'100px'}/>
+        </Stack>
+    }
+
+    if (sessionLoadState.hasFailed()) {
+        return <FailMessage message={'Please try reloading.'}/>
+    }
+
+    if (sessionLoadState.isReady()) {
+        return (
+            <VStack h={'full'} align="stretch">
+                <Box>
+                    <SessionHeader/>
+                </Box>
+                {selectedSubtopic &&
+                <ExerciseContainer exercise={exercise}/>
+                }
+            </VStack>
+        )
+    }
+
+    return <></>
 }

@@ -25,9 +25,8 @@ const slice = createSlice({
             state.exerciseIds.forEach(exerciseId => {
                 state.exercises[exerciseId].isCompleted = false
                 state.exercises[exerciseId].selectedAnswerIndex = -1
-                state.exercises[exerciseId].hints.forEach(hint => {
-                    hint.isVisible = false
-                })
+                state.exercises[exerciseId].areHintsShown = false
+                state.exercises[exerciseId].currentHintIndex = 0
             })
         },
         setSelectedAnswerField: (state, action: PayloadAction<{ exerciseId: string, answerFieldIndex: number }>) => {
@@ -43,11 +42,29 @@ const slice = createSlice({
             state.exercises[state.currentExerciseId].selectedAnswerIndex = action.payload
             state.exercises[state.currentExerciseId].isCompleted = true
         },
-        showNextHint: (state) => {
-            let hint = state.exercises[state.currentExerciseId].hints.find(hint => !hint.isVisible)
-            if (hint) {
-                hint.isVisible = true
+        revealHints: (state) => {
+            if (state.exercises[state.currentExerciseId].hints.length > 0) {
+                state.exercises[state.currentExerciseId].currentHintIndex = 0
+                state.exercises[state.currentExerciseId].areHintsShown = true
             }
+        },
+        showNextHint: (state) => {
+            if (state.exercises[state.currentExerciseId].currentHintIndex >= state.exercises[state.currentExerciseId].hints.length - 1) {
+                return
+            }
+            state.exercises[state.currentExerciseId].currentHintIndex++
+        },
+        showPreviousHint: (state) => {
+            if (state.exercises[state.currentExerciseId].currentHintIndex <= 0) {
+                return
+            }
+            state.exercises[state.currentExerciseId].currentHintIndex--
+        },
+        showHintAtIndex: (state, action: PayloadAction<number>) => {
+            if (action.payload < 0 || action.payload >= state.exercises[state.currentExerciseId].hints.length) {
+                return
+            }
+            state.exercises[state.currentExerciseId].currentHintIndex = action.payload
         },
         next: (state) => {
             if (state.currentExerciseIndex >= state.exerciseIds.length - 1) {

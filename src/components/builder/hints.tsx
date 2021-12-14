@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectHints, selectHintsPreview, selectIsInPreview} from "../../pages/builder/selectors";
 import {HintEntity} from "../../models/hint.entity";
 import {Hint} from "./hint";
-import {Hints} from "../exercise/hints";
+import {HintsPreview} from "./HintsPreview";
 
 export const HintsField = () => {
     const hints = useSelector(selectHints)
@@ -23,7 +23,7 @@ export const HintsField = () => {
                 </HStack>
             </FormLabel>
             {isInPreview &&
-            <Hints hints={hintsPreview}/>
+            <HintsPreview hints={hintsPreview}/>
             }
             {!isInPreview &&
             <VStack align={'stretch'}>

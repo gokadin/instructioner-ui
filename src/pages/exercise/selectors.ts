@@ -56,9 +56,14 @@ export const selectIsLastExercise = createSelector(
     (currentIndex, totalCount) => currentIndex + 1 === totalCount
 )
 
-export const selectHasHiddenHint = createSelector(
-    selectHints,
-    (hints) => hints.filter(hint => !hint.isVisible).length > 0
+export const selectAreHintsShown = createSelector(
+    selectCurrentExercise,
+    (exercise) => exercise.areHintsShown
+)
+
+export const selectCurrentHintIndex = createSelector(
+    selectCurrentExercise,
+    (exercise) => exercise.currentHintIndex
 )
 
 export const selectCorrectAnswerFieldIndex = createSelector(

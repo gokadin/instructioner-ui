@@ -14,4 +14,6 @@ export interface ExerciseEntity {
     hints: HintEntity[]
     difficulty: number
     isCompleted: boolean
+    currentHintIndex: number
+    areHintsShown: boolean
 }

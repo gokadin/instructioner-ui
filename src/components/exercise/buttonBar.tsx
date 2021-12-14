@@ -4,8 +4,8 @@ import {exerciseActions} from "../../pages/exercise/reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {
     selectAnswerIsSelected,
+    selectAreHintsShown,
     selectCorrectAnswerFieldIndex,
-    selectHasHiddenHint,
     selectIsCorrect,
     selectIsLastExercise
 } from "../../pages/exercise/selectors";
@@ -23,7 +23,7 @@ export const ButtonBar = ({exercise}: Props) => {
     const isCorrect = useSelector(selectIsCorrect)
     const selectedAnswerIsSelected = useSelector(selectAnswerIsSelected)
     const isLastExercise = useSelector(selectIsLastExercise)
-    const hasHiddenHint = useSelector(selectHasHiddenHint)
+    const areHintsShown = useSelector(selectAreHintsShown)
     const dispatch = useDispatch()
     const history = useHistory()
     const bgColor = useColorModeValue('gray.200', 'gray.900')
@@ -56,8 +56,8 @@ export const ButtonBar = ({exercise}: Props) => {
                         icon={<ViewIcon/>}
                         onClick={handleShowAnswer}/>
             <IconButton aria-label={'Hints'} size={'lg'} variant={'outline'} colorScheme={'orange'} lineHeight={'md'}
-                        disabled={!hasHiddenHint}
-                        icon={<QuestionIcon/>} onClick={() => dispatch(exerciseActions.showNextHint())}/>
+                        disabled={areHintsShown}
+                        icon={<QuestionIcon/>} onClick={() => dispatch(exerciseActions.revealHints())}/>
             {exercise.isCompleted &&
             <Button w={'100%'} h={'100%'} variant={'solid'} colorScheme={'green'}
                     onClick={handleNextExercise}>Next</Button>
