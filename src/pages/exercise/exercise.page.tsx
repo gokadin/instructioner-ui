@@ -40,7 +40,7 @@ export const ExercisePage = () => {
 
     if (sessionLoadState.isReady()) {
         return (
-            <VStack h={'full'} align="stretch">
+            <VStack h={'full'} align="stretch" maxH={'100vh'}>
                 <Box>
                     <SessionHeader/>
                 </Box>

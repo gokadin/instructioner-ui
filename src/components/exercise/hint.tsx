@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const Hint = ({hint}: Props) => {
-    return <Box>
+    return <Box p={4}>
         <Text fontSize={'lg'}>
             <Latex>{hint.content}</Latex>
         </Text>

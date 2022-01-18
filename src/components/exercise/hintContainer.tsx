@@ -14,7 +14,7 @@ export const HintContainer = ({hints, hintIndex}: Props) => {
         <Flex flexDirection={'column'} h={'full'}>
             <Divider mt={'0px !important'}/>
             <HintHeader hintCount={hints.length} hintIndex={hintIndex}/>
-            <Box flex={'1'} p={4}>
+            <Box h={'full'}>
                 <Hints hints={hints} hintIndex={hintIndex}/>
             </Box>
         </Flex>
