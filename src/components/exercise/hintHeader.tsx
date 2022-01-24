@@ -19,7 +19,7 @@ export const HintHeader = ({hintIndex, hintCount}: Props) => {
 
     return (
         <Center pt={2} position={'relative'}>
-            <QuestionOutlineIcon position={'absolute'} left={4}/>
+            <QuestionOutlineIcon position={'absolute'} left={1} top={1}/>
             {hintCount > 1 &&
             <HStack spacing={0}>
                 {[...Array(hintCount)].map((_, i) => (

@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, FormControl, FormLabel, Textarea} from "@chakra-ui/react";
+import {Box, FormControl, Tag, Textarea} from "@chakra-ui/react";
 import {useDispatch, useSelector} from "react-redux";
 import {builderActions} from "../../pages/builder/reducer";
 import {
@@ -26,12 +26,8 @@ export const QuestionField = () => {
 
     return (
         <FormControl>
-            <FormLabel>Question</FormLabel>
-            {isInPreview &&
-            <Question content={preview}/>
-            }
-            {!isInPreview &&
-            <Box position={'relative'} h={'160px'}>
+            <Box borderWidth={1} p={2}>Question</Box>
+            <Box position={'relative'}>
                 <Box marginLeft={'1px'} fontSize={'lg'} letterSpacing={'1px'} p={2} lineHeight={'lg'}
                      position={'absolute'} h={'full'} overflowY={'auto'}
                      w={'full'} color={'transparent'}
@@ -39,10 +35,19 @@ export const QuestionField = () => {
                      wordBreak={'break-word'}>
                     {parse(questionContentFormatted)}
                 </Box>
-                <Textarea letterSpacing={'1px'} lineHeight={'lg'} fontSize={'lg'} spellCheck={'false'} p={2} h={'full'}
-                          placeholder={'Question'}
-                          isFullWidth={true} value={questionContent}
-                          onChange={(e) => handleChange(e.target.value)}/>
+                <Box borderWidth={1}>
+                    <Textarea letterSpacing={'1px'} lineHeight={'lg'} fontSize={'lg'} spellCheck={'false'} p={2}
+                              h={'full'}
+                              placeholder={'Question'}
+                              isFullWidth={true} value={questionContent}
+                              variant={'unstyled'}
+                              onChange={(e) => handleChange(e.target.value)}/>
+                </Box>
+            </Box>
+            {isInPreview &&
+            <Box borderWidth={1} position={'relative'}>
+                <Tag position={'absolute'} right={'4px'} top={'4px'}>Preview</Tag>
+                <Question content={preview}/>
             </Box>
             }
         </FormControl>

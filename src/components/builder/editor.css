@@ -4,3 +4,16 @@
     color: transparent;
     border-radius: 3px;
 }
+
+.container {
+    width: 100%;
+    min-height: 200px;
+    border-radius: 6px;
+    border: 1px solid #424242;
+    padding: 8px;
+    outline: 0 solid transparent;
+}
+
+.container:focus {
+    outline: 1px solid #4067ad;
+}

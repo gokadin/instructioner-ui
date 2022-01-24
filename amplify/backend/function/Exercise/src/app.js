@@ -116,7 +116,13 @@ const parseContent = (content, variables) => {
 
     const solveRegex = new RegExp(SOLVE_REGEX, 'gm')
     result = result.replace(solveRegex, (match, contents) => {
-        return evaluate(contents)
+        contents = removeExtraBrackets(contents)
+        try {
+            return evaluate(contents)
+        } catch (e) {
+            console.log(`could not parse ${contents}`, e)
+            throw e
+        }
     })
 
     return applyMathPostProcesses(result)
@@ -128,8 +134,14 @@ const applyMathPostProcesses = (content) => {
     return content.replace(regex, (match, openingSymbol, mathContent, closingSymbol) => {
         mathContent = simplifyFractions(mathContent)
         mathContent = removeUnitExp(mathContent)
+        mathContent = removeConflictingOperators(mathContent)
         return `${openingSymbol}${mathContent}${closingSymbol}`
     })
+}
+
+const removeConflictingOperators = (content) => {
+    content = content.replace(/\+-/g, '-')
+    return content.replace(/--/g, '+')
 }
 
 const UNIT_EXP_REGEX = '\\^1|\\^{[1]}'
@@ -163,6 +175,25 @@ const shuffleArray = (a) => {
         [a[i], a[j]] = [a[j], a[i]]
     }
     return a
+}
+
+const removeExtraBrackets = (contents) => {
+    let bracketCount = 0
+    for (let i = 0; i < contents.length; i++) {
+        if (contents[i] === '(') {
+            bracketCount++
+        } else if (contents[i] === ')') {
+            bracketCount--
+        }
+    }
+
+    while (bracketCount < 0) {
+        let lastIndex = contents.lastIndexOf(')')
+        contents = contents.slice(0, lastIndex) + contents.slice(lastIndex + 1)
+        bracketCount++
+    }
+
+    return contents
 }
 
 /********************************
